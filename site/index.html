@@ -34,127 +34,139 @@
 <section id="tab-plan" class="panel active">
   <div class="plan-layout">
     <aside class="settings card">
-      <h2 data-i18n="resupply"></h2>
-
-      <label class="field">
-        <span><span data-i18n="trail"></span> <i class="help" tabindex="0" data-help="hTrail">?</i></span>
-        <select id="s-trail"></select>
-      </label>
-
-      <div class="field" id="dir-box">
-        <span><span data-i18n="dir"></span> <i class="help" tabindex="0" data-help="hDir">?</i></span>
-        <div class="seg" id="s-dir">
-          <button data-v="nobo" data-tipkey="tipNobo">NOBO ↑</button>
-          <button data-v="sobo" data-tipkey="tipSobo">SOBO ↓</button>
-        </div>
-      </div>
-
-      <label class="field">
-        <span><span data-i18n="shopAt"></span> <i class="help" tabindex="0" data-help="hStop">?</i></span>
-        <select id="s-stop"></select>
-      </label>
-      <p id="stop-info" class="hint"></p>
-
-      <div id="leg-box">
+      <details class="grp" data-grp="trail">
+        <summary><span data-i18n="gTrail"></span><small class="gsum" id="sum-trail"></small></summary>
+        <div class="grp-body">
         <label class="field">
-          <span><span data-i18n="nextStop"></span> <i class="help" tabindex="0" data-help="hLeg">?</i></span>
-          <select id="s-to"></select>
+          <span><span data-i18n="trail"></span> <i class="help" tabindex="0" data-help="hTrail">?</i></span>
+          <select id="s-trail"></select>
         </label>
-        <label class="field" id="custom-row">
-          <span id="l-custom"></span>
-          <input type="number" id="s-custom" min="1" max="2000" step="1">
+  
+        <div class="field" id="dir-box">
+          <span><span data-i18n="dir"></span> <i class="help" tabindex="0" data-help="hDir">?</i></span>
+          <div class="seg" id="s-dir">
+            <button data-v="nobo" data-tipkey="tipNobo">NOBO ↑</button>
+            <button data-v="sobo" data-tipkey="tipSobo">SOBO ↓</button>
+          </div>
+        </div>
+  
+        <label class="field">
+          <span><span data-i18n="shopAt"></span> <i class="help" tabindex="0" data-help="hStop">?</i></span>
+          <select id="s-stop"></select>
         </label>
+        <p id="stop-info" class="hint"></p>
+  
+        <div id="leg-box">
+          <label class="field">
+            <span><span data-i18n="nextStop"></span> <i class="help" tabindex="0" data-help="hLeg">?</i></span>
+            <select id="s-to"></select>
+          </label>
+          <label class="field" id="custom-row">
+            <span id="l-custom"></span>
+            <input type="number" id="s-custom" min="1" max="2000" step="1">
+          </label>
+          <div class="row2">
+            <label class="field">
+              <span id="l-daydist"></span>
+              <input type="number" id="s-daydist" min="3" max="80" step="1">
+            </label>
+            <label class="field">
+              <span data-i18n="reserve"></span>
+              <select id="s-reserve"><option value="0">0</option><option value="0.5">+ ½</option><option value="1">+ 1</option><option value="2">+ 2</option></select>
+            </label>
+          </div>
+          <p id="leg-info" class="hint legi"></p>
+        </div>
+  
         <div class="row2">
           <label class="field">
-            <span id="l-daydist"></span>
-            <input type="number" id="s-daydist" min="3" max="80" step="1">
+            <span><span data-i18n="days"></span> <b id="v-days">4</b> <i class="help" tabindex="0" data-help="hDays">?</i></span>
+            <input type="range" id="s-days" min="1" max="14" value="4">
           </label>
           <label class="field">
-            <span data-i18n="reserve"></span>
-            <select id="s-reserve"><option value="0">0</option><option value="0.5">+ ½</option><option value="1">+ 1</option><option value="2">+ 2</option></select>
+            <span data-i18n="kcalDay"></span>
+            <input type="number" id="s-kcal" min="1200" max="7000" step="100" value="3500">
           </label>
         </div>
-        <p id="leg-info" class="hint legi"></p>
-      </div>
-
-      <div class="row2">
+        </div>
+      </details>
+      <details class="grp" data-grp="diet">
+        <summary><span data-i18n="gDiet"></span><small class="gsum" id="sum-diet"></small></summary>
+        <div class="grp-body">
+        <div class="row2">
+          <label class="field">
+            <span><span data-i18n="proteinGoal"></span> <i class="help" tabindex="0" data-help="hProtein">?</i></span>
+            <input type="number" id="s-protein" min="30" max="250" step="5" value="100">
+          </label>
+          <label class="field">
+            <span><span data-i18n="temp"></span> <i class="help" tabindex="0" data-help="hTemp">?</i></span>
+            <select id="s-temp"></select>
+          </label>
+        </div>
+  
+        <div class="field">
+          <span><span data-i18n="prep"></span> <i class="help" tabindex="0" data-help="hPrep">?</i></span>
+          <div class="seg" id="s-prep">
+            <button data-v="stove" data-i18n="stove" data-tipkey="tipStove"></button>
+            <button data-v="coldsoak" data-tipkey="tipCold">Cold Soak</button>
+            <button data-v="nocook" data-i18n="nocook" data-tipkey="tipNo"></button>
+          </div>
+        </div>
+  
+        <div class="field">
+          <span><span data-i18n="blocks"></span> <i class="help" tabindex="0" data-help="hBlocks">?</i></span>
+          <div class="checks">
+            <label data-tipkey="tipC_lunch"><input type="checkbox" id="c-lunch"> <i data-i18n="cLunch"></i></label>
+            <label data-tipkey="tipC_bump"><input type="checkbox" id="c-bump"> <i data-i18n="cBump"></i></label>
+            <label data-tipkey="tipC_drink"><input type="checkbox" id="c-drink"> <i data-i18n="cDrink"></i></label>
+            <label data-tipkey="tipC_dessert"><input type="checkbox" id="c-dessert"> <i data-i18n="cDessert"></i></label>
+            <label data-tipkey="tipC_veg"><input type="checkbox" id="c-veg"> <i data-i18n="cVeg"></i></label>
+            <label data-tipkey="tipC_fresh"><input type="checkbox" id="c-fresh"> <i data-i18n="cFresh"></i></label>
+          </div>
+        </div>
+  
+        <div class="field">
+          <span><span data-i18n="allergyTitle"></span> <i class="help" tabindex="0" data-help="hAllergy">?</i></span>
+          <div class="chips" id="s-allergens"></div>
+          <div class="checks lac-opts" id="lac-opts" hidden>
+            <label data-tipkey="tipLacChoc"><input type="checkbox" id="c-lacchoc"> <i data-i18n="lacChoc"></i></label>
+            <label data-tipkey="tipLacPowder"><input type="checkbox" id="c-lacpowder"> <i data-i18n="lacPowder"></i></label>
+          </div>
+          <p class="hint" data-i18n="allergyHint"></p>
+        </div>
+        </div>
+      </details>
+      <details class="grp" data-grp="pref">
+        <summary><span data-i18n="gPref"></span><small class="gsum" id="sum-pref"></small></summary>
+        <div class="grp-body">
+        <div class="field">
+          <span><span data-i18n="profile"></span> <i class="help" tabindex="0" data-help="hProfile">?</i></span>
+          <div class="seg" id="s-profile">
+            <button data-v="gs" data-tipkey="tipGs">GearSkeptic</button>
+            <button data-v="bal" data-i18n="profBal" data-tipkey="tipBal"></button>
+            <button data-v="weight" data-i18n="profW" data-tipkey="tipW"></button>
+          </div>
+        </div>
+  
         <label class="field">
-          <span><span data-i18n="days"></span> <b id="v-days">4</b> <i class="help" tabindex="0" data-help="hDays">?</i></span>
-          <input type="range" id="s-days" min="1" max="14" value="4">
+          <span class="split"><em data-i18n="lightest"></em><em><i data-i18n="cravings"></i> <i class="help" tabindex="0" data-help="hLust">?</i></em></span>
+          <input type="range" id="s-lust" min="0" max="100" value="40">
         </label>
         <label class="field">
-          <span data-i18n="kcalDay"></span>
-          <input type="number" id="s-kcal" min="1200" max="7000" step="100" value="3500">
+          <span class="split"><em data-i18n="sameOk"></em><em><i data-i18n="variety"></i> <i class="help" tabindex="0" data-help="hVar">?</i></em></span>
+          <input type="range" id="s-var" min="0" max="100" value="65">
         </label>
-      </div>
-
-      <div class="row2">
-        <label class="field">
-          <span><span data-i18n="proteinGoal"></span> <i class="help" tabindex="0" data-help="hProtein">?</i></span>
-          <input type="number" id="s-protein" min="30" max="250" step="5" value="100">
-        </label>
-        <label class="field">
-          <span><span data-i18n="temp"></span> <i class="help" tabindex="0" data-help="hTemp">?</i></span>
-          <select id="s-temp"></select>
-        </label>
-      </div>
-
-      <div class="field">
-        <span><span data-i18n="prep"></span> <i class="help" tabindex="0" data-help="hPrep">?</i></span>
-        <div class="seg" id="s-prep">
-          <button data-v="stove" data-i18n="stove" data-tipkey="tipStove"></button>
-          <button data-v="coldsoak" data-tipkey="tipCold">Cold Soak</button>
-          <button data-v="nocook" data-i18n="nocook" data-tipkey="tipNo"></button>
+  
+        <div class="field">
+          <span><span data-i18n="cravingFor"></span> <i class="help" tabindex="0" data-help="hCraving">?</i> <small data-i18n="cravingHint"></small></span>
+          <div class="chips" id="s-tags"></div>
         </div>
-      </div>
-
-      <div class="field">
-        <span><span data-i18n="profile"></span> <i class="help" tabindex="0" data-help="hProfile">?</i></span>
-        <div class="seg" id="s-profile">
-          <button data-v="gs" data-tipkey="tipGs">GearSkeptic</button>
-          <button data-v="bal" data-i18n="profBal" data-tipkey="tipBal"></button>
-          <button data-v="weight" data-i18n="profW" data-tipkey="tipW"></button>
         </div>
+      </details>
+      <div class="gen-bar">
+        <button id="btn-gen" class="primary" data-i18n="suggest"></button>
+        <p class="hint" data-i18n="lockHint"></p>
       </div>
-
-      <label class="field">
-        <span class="split"><em data-i18n="lightest"></em><em><i data-i18n="cravings"></i> <i class="help" tabindex="0" data-help="hLust">?</i></em></span>
-        <input type="range" id="s-lust" min="0" max="100" value="40">
-      </label>
-      <label class="field">
-        <span class="split"><em data-i18n="sameOk"></em><em><i data-i18n="variety"></i> <i class="help" tabindex="0" data-help="hVar">?</i></em></span>
-        <input type="range" id="s-var" min="0" max="100" value="65">
-      </label>
-
-      <div class="field">
-        <span><span data-i18n="blocks"></span> <i class="help" tabindex="0" data-help="hBlocks">?</i></span>
-        <div class="checks">
-          <label data-tipkey="tipC_lunch"><input type="checkbox" id="c-lunch"> <i data-i18n="cLunch"></i></label>
-          <label data-tipkey="tipC_bump"><input type="checkbox" id="c-bump"> <i data-i18n="cBump"></i></label>
-          <label data-tipkey="tipC_drink"><input type="checkbox" id="c-drink"> <i data-i18n="cDrink"></i></label>
-          <label data-tipkey="tipC_dessert"><input type="checkbox" id="c-dessert"> <i data-i18n="cDessert"></i></label>
-          <label data-tipkey="tipC_veg"><input type="checkbox" id="c-veg"> <i data-i18n="cVeg"></i></label>
-          <label data-tipkey="tipC_fresh"><input type="checkbox" id="c-fresh"> <i data-i18n="cFresh"></i></label>
-        </div>
-      </div>
-
-      <div class="field">
-        <span><span data-i18n="allergyTitle"></span> <i class="help" tabindex="0" data-help="hAllergy">?</i></span>
-        <div class="chips" id="s-allergens"></div>
-        <div class="checks lac-opts" id="lac-opts" hidden>
-          <label data-tipkey="tipLacChoc"><input type="checkbox" id="c-lacchoc"> <i data-i18n="lacChoc"></i></label>
-          <label data-tipkey="tipLacPowder"><input type="checkbox" id="c-lacpowder"> <i data-i18n="lacPowder"></i></label>
-        </div>
-        <p class="hint" data-i18n="allergyHint"></p>
-      </div>
-
-      <div class="field">
-        <span><span data-i18n="cravingFor"></span> <i class="help" tabindex="0" data-help="hCraving">?</i> <small data-i18n="cravingHint"></small></span>
-        <div class="chips" id="s-tags"></div>
-      </div>
-
-      <button id="btn-gen" class="primary" data-i18n="suggest"></button>
-      <p class="hint" data-i18n="lockHint"></p>
     </aside>
 
     <div class="plan-out">

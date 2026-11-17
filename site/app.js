@@ -18,6 +18,7 @@ const I18N = {
     allergyTitle: 'Allergien / Unverträglichkeiten',
     allergyHint: 'Erkennung nur über Produktname und Kategorie, die Tabelle enthält keine Zutatenlisten. Bei echter Allergie immer das Etikett prüfen, auch auf „kann Spuren enthalten“.',
     hideAllergens: 'meine Allergene ausblenden',
+    gTrail: '🥾 Trail & Etappe', gDiet: '🍽 Ernährung & Allergien', gPref: '❤️ Vorlieben',
     trail: 'Trail', noTrail: '– kein bestimmter Trail –', customLeg: 'Eigene Strecke (Distanz eingeben)', customDist: 'Strecke bis zum nächsten Resupply',
     hTrail: 'Wähl deinen Trail. Danach stehen nur dessen Resupply-Orte zur Auswahl, und die Distanz zum nächsten Stop wird automatisch berechnet. Für Trails, die hier fehlen, oder einen eigenen Abschnitt: „kein bestimmter Trail“ wählen und bei „Nächster Resupply“ die eigene Strecke eingeben. Bei Trails mit ~ sind die Meilen grobe Werte.',
     dir: 'Laufrichtung',
@@ -111,6 +112,7 @@ const I18N = {
     allergyTitle: 'Allergies / intolerances',
     allergyHint: 'Detected from product name and class only; the sheet has no ingredient lists. With a real allergy always check the label, including "may contain".',
     hideAllergens: 'hide my allergens',
+    gTrail: '🥾 Trail & section', gDiet: '🍽 Diet & allergies', gPref: '❤️ Preferences',
     trail: 'Trail', noTrail: '– no specific trail –', customLeg: 'Custom distance (enter it)', customDist: 'Distance to next resupply',
     hTrail: 'Pick your trail. Only its resupply stops are listed then, and the distance to the next stop is calculated automatically. For trails not listed here, or your own section: choose "no specific trail" and enter a custom distance under "Next resupply". Trails marked ~ have rough mileage.',
     dir: 'Direction',
@@ -229,6 +231,7 @@ const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pi
 function load() { try { return JSON.parse(localStorage.getItem(LS)); } catch (e) { return null; } }
 function save() {
   S.fav = [...fav]; S.dis = [...dis]; S.pin = [...pin];
+  try { if (D) groupSummaries(); } catch (e) { /* egal */ }
   try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) { /* egal */ }
 }
 
@@ -738,6 +741,7 @@ function applyLang() {
   $('#tierlist').innerHTML = Object.keys(TIER_RANK).map(k => `<li>${TIER_ICON[k]} ${tierLabel(k)}</li>`).join('');
 
   renderElec();
+  groupSummaries();
   if ($('#tab-foods').classList.contains('active')) renderFoods();
   if (S.plan) renderPlan();
 }
@@ -851,9 +855,29 @@ function updateLeg() {
   $('#leg-info').textContent = L().legInfo(d, fmt(exact, 1), days);
 }
 
+// ---------- Einstellungsblöcke ----------
+function groupSummaries() {
+  const st = S.settings, tm = trailMeta(st.trail), s = currentStop();
+  const to = st.toStop === 'custom' ? '📏' : (st.toStop !== '' && D.stops[+st.toStop] ? D.stops[+st.toStop].name : '');
+  $('#sum-trail').textContent = [tm ? tm.id : '', s && !s.generic ? s.name + (to ? ' → ' + to : '') : '', `${st.days} ${t('days')} · ${fmt(st.kcal)} kcal`].filter(Boolean).join(' · ');
+  const al = st.allergens.map(a => L().al[a].split(' ')[0]);
+  $('#sum-diet').textContent = [t({ stove: 'stove', coldsoak: 'Cold Soak', nocook: 'nocook' }[st.prep]), `${st.protein} g ${t('prot')}`, al.length ? '🚫 ' + al.join(', ') : ''].filter(Boolean).join(' · ');
+  const yes = Object.entries(S.tags).filter(([, v]) => v === 1).map(([k]) => L().tags[k]);
+  $('#sum-pref').textContent = [{ gs: 'GearSkeptic', bal: t('profBal'), weight: t('profW') }[st.profile], yes.length ? '❤️ ' + yes.join(', ') : ''].filter(Boolean).join(' · ');
+}
+function initGroups() {
+  const st = S.settings, mobile = innerWidth < 900;
+  st.groups = st.groups || { trail: true, diet: !mobile, pref: !mobile };
+  $$('.grp').forEach(d => {
+    d.open = !!st.groups[d.dataset.grp];
+    d.addEventListener('toggle', () => { st.groups[d.dataset.grp] = d.open; save(); });
+  });
+}
+
 // ---------- Init ----------
 function initUI() {
   const st = S.settings;
+  initGroups();
   $$('.tab').forEach(b => b.onclick = () => {
     $$('.tab').forEach(x => x.classList.toggle('active', x === b));
     $$('.panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + b.dataset.tab));
