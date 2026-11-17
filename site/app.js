@@ -4,7 +4,8 @@
 // ---------- i18n ----------
 const I18N = {
   de: {
-    title: 'Trail Food Planer', subtitle: 'kcal pro Gewicht, Erreichbarkeit am PCT, Menüs auf die du Lust hast',
+    title: 'Trail Food Planer', subtitle: 'kcal pro Gewicht, Erreichbarkeit auf PCT, CDT und AT, Menüs auf die du Lust hast',
+    boxOnly: s => `📦 ${s}: Hier gibt es nichts zu kaufen. Der Plan zeigt, was ins Paket gehört (alle Marken inkl. online).`,
     tabPlan: 'Planer', tabFoods: 'Lebensmittel', tabSalt: 'Elektrolyte', tabAbout: 'Methode',
     resupply: 'Resupply', shopAt: 'Einkaufsort', days: 'Tage', kcalDay: 'kcal / Tag', proteinGoal: 'Protein-Ziel g / Tag',
     temp: 'Temperatur (Na-Bedarf)', prep: 'Zubereitung', stove: 'Kocher', nocook: 'Gar nicht', profile: 'Makro-Profil',
@@ -30,7 +31,7 @@ const I18N = {
     tempCol: 'Temperatur', naCol: 'Na-Bedarf mg/Tag', naHint: 'RDA zum Vergleich: 1500 mg Na, 3400 mg K. Der Planer zeigt, wie viel Natrium die gewählte Verpflegung schon liefert.',
     elecTitle: 'Elektrolyt-Produkte', product: 'Produkt', caffeine: 'Koffein',
     scales: 'Bewertungsskalen (aus Hiker Food 2.5)', availText: 'Die Spalte „Erhältlich“ ist eine eigene Einschätzung pro Marke, nicht aus GearSkeptics Tabelle:',
-    stopsHint: 'Die PCT-Stops und ihre Ladengrößen sind grobe Richtwerte. Vor Ort und in FarOut immer gegenchecken, Läden ändern sich jede Saison.',
+    stopsHint: 'Die Trail-Stops (PCT, CDT, AT) und ihre Ladengrößen sind grobe Richtwerte. Vor Ort und in FarOut immer gegenchecken, Läden ändern sich jede Saison.',
     updTitle: 'Daten aktualisieren', updText: 'Die Excel liegt im Repo unter <code>data/Hiker_Food_2.5.xlsx</code>. Neue Version reinlegen und pushen, die GitHub Action baut <code>foods.json</code> neu. Marken-Einstufungen stehen in <code>data/brands.csv</code>, Korrekturen zu Allergenen in <code>data/allergen_overrides.csv</code>.',
     footer: 'Daten: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Frühstück', meal_drink: 'Drink', meal_lunch: 'Mittag', meal_snack: 'Snacks über den Tag', meal_dinner: 'Abendessen', meal_bump: 'Bump', meal_dessert: 'Dessert',
@@ -84,7 +85,8 @@ const I18N = {
     tags: { schoko: 'Schoko', erdnuss: 'Erdnuss', nuss: 'Nüsse', 'käse': 'Käse', fleisch: 'Fleisch', scharf: 'Scharf', frucht: 'Fruchtig', kaffee: 'Kaffee', asiatisch: 'Asiatisch', mexikanisch: 'Mexikanisch', pasta: 'Pasta', reis: 'Reis', kartoffel: 'Kartoffel', kokos: 'Kokos' },
   },
   en: {
-    title: 'Trail Food Planner', subtitle: 'Calories per weight, PCT availability, menus you actually crave',
+    title: 'Trail Food Planner', subtitle: 'Calories per weight, availability on the PCT, CDT and AT, menus you actually crave',
+    boxOnly: s => `📦 ${s}: nothing to buy here. The plan shows what goes in your box (all brands incl. online).`,
     tabPlan: 'Planner', tabFoods: 'Foods', tabSalt: 'Electrolytes', tabAbout: 'Method',
     resupply: 'Resupply', shopAt: 'Shopping at', days: 'Days', kcalDay: 'kcal / day', proteinGoal: 'Protein goal g / day',
     temp: 'Temperature (Na need)', prep: 'Preparation', stove: 'Stove', nocook: 'No prep', profile: 'Macro profile',
@@ -110,7 +112,7 @@ const I18N = {
     tempCol: 'Temperature', naCol: 'Na need mg/day', naHint: 'RDA for comparison: 1500 mg Na, 3400 mg K. The planner shows how much sodium your food already provides.',
     elecTitle: 'Electrolyte products', product: 'Product', caffeine: 'Caffeine',
     scales: 'Rating scales (from Hiker Food 2.5)', availText: 'The "Available" column is my own per-brand estimate, not part of GearSkeptic\'s sheet:',
-    stopsHint: 'PCT stops and store sizes are rough guidance. Always double-check on site and in FarOut, stores change every season.',
+    stopsHint: 'Trail stops (PCT, CDT, AT) and store sizes are rough guidance. Always double-check on site and in FarOut, stores change every season.',
     updTitle: 'Updating the data', updText: 'The spreadsheet lives in the repo at <code>data/Hiker_Food_2.5.xlsx</code>. Drop in a new version and push; the GitHub Action rebuilds <code>foods.json</code>. Brand ratings are in <code>data/brands.csv</code>, allergen corrections in <code>data/allergen_overrides.csv</code>.',
     footer: 'Data: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Breakfast', meal_drink: 'Drink', meal_lunch: 'Lunch', meal_snack: 'Snacks through the day', meal_dinner: 'Dinner', meal_bump: 'Bump', meal_dessert: 'Dessert',
@@ -183,6 +185,7 @@ function browserLang() {
 const OZ = 28.3495;
 const TIER_ICON = { gas: '⛽', market: '🏪', super: '🛒', outdoor: '🏕', online: '📦' };
 const TIER_RANK = { gas: 0, market: 1, super: 2, outdoor: 3, online: 4 };
+const TRAILS = [['PCT', 'Pacific Crest Trail'], ['CDT', 'Continental Divide Trail'], ['AT', 'Appalachian Trail']];
 const MEALS = ['breakfast', 'drink', 'lunch', 'snack', 'dinner', 'bump', 'dessert'];
 const NA_BY_TEMP = { 15: 3300, 20: 4100, 25: 5000, 30: 6100, 35: 7500, 40: 9500 };
 const W = ['var(--w0)', 'var(--w1)', 'var(--w2)', 'var(--w3)', 'var(--w4)', 'var(--w5)'];
@@ -273,7 +276,7 @@ function currentStop() {
   return D.stops[+v.slice(2)];
 }
 function availableAt(f, stop) {
-  if (!stop) return true;
+  if (!stop || stop.tier === 'none') return true;
   if (f.tier === 'online') return false;
   if (f.tier === 'outdoor') return !!stop.outdoor;
   return TIER_RANK[f.tier] <= TIER_RANK[stop.tier];
@@ -475,7 +478,8 @@ function renderSummary() {
   const elTxt = el ? `${fmt(naGap / el.na, 1)}× ${esc(el.b)} ${esc(el.n)} (${fmt(el.na)} mg Na)` : '';
   const dayW = T.g / nd;
   let warn = '';
-  if (stop) {
+  if (stop && stop.tier === 'none') warn = `<div class="warnbox">${esc(L().boxOnly(stop.name))}</div>`;
+  else if (stop) {
     const bf = poolFor('breakfast', stop).length, dn = poolFor('dinner', stop).length, sn = poolFor('snack', stop).length;
     if (bf < 5 || dn < 5 || sn < 40) warn = `<div class="warnbox">${esc(L().fewOptions(stop.name, bf, dn, sn))}</div>`;
   }
@@ -672,7 +676,7 @@ function applyLang() {
   const blocks = new Set($$('[data-lang]').map(el => el.dataset.lang));
   const show = blocks.has(st.lang) ? st.lang : 'en';
   $$('[data-lang]').forEach(el => { el.hidden = el.dataset.lang !== show; });
-  document.title = `${t('title')} · PCT Resupply`;
+  document.title = `${t('title')} · PCT · CDT · AT`;
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
@@ -684,7 +688,7 @@ function applyLang() {
   const sel = $('#s-stop');
   sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>
     <optgroup label="${t('optGeneric')}">${['super', 'market', 'gas'].map(k => `<option value="t:${k}">${TIER_ICON[k]} ${tierLabel(k)}</option>`).join('')}</optgroup>
-    <optgroup label="${t('optPct')}">${D.stops.map((s, i) => `<option value="s:${i}">${t('mile')} ${s.mile} · ${esc(s.name)}</option>`).join('')}</optgroup>`;
+    ${TRAILS.map(tr => `<optgroup label="${tr[1]} (NOBO)">${D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === tr[0]).map(([s, i]) => `<option value="s:${i}">${tr[0]} · ${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('')}</optgroup>`).join('')}`;
   sel.value = st.stop;
   stopInfo();
 
@@ -720,7 +724,7 @@ function applyLang() {
 function stopInfo() {
   const s = currentStop();
   $('#stop-info').innerHTML = !s ? t('infoAll') : s.generic ? t('infoGeneric')
-    : `${TIER_ICON[s.tier]} ${esc(S.settings.lang === 'de' ? s.note : (s.note_en || s.note))}${s.outdoor ? ` · 🏕 ${t('infoFD')}` : ''}`;
+    : `${s.tier === 'none' ? '📦' : TIER_ICON[s.tier]} ${esc(S.settings.lang === 'de' ? s.note : (s.note_en || s.note))}${s.outdoor ? ` · 🏕 ${t('infoFD')}` : ''}`;
 }
 function drawTags() {
   $('#s-tags').innerHTML = Object.entries(L().tags).map(([k, l]) =>

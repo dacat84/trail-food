@@ -2,7 +2,7 @@
 """Baut site/data/foods.json aus GearSkeptics Hiker_Food_2.5.xlsx.
 
 Aufruf:  python3 scripts/build_data.py
-Quellen: data/Hiker_Food_2.5.xlsx, data/brands.csv, data/item_overrides.csv, data/pct_stops.json
+Quellen: data/Hiker_Food_2.5.xlsx, data/brands.csv, data/item_overrides.csv, data/stops.json
 """
 import csv
 import json
@@ -261,7 +261,7 @@ def main():
             "tier": brands.get(row[h["Brand"]].strip(), "online"),
         })
 
-    stops = json.loads((DATA / "pct_stops.json").read_text(encoding="utf-8"))
+    stops = json.loads((DATA / "stops.json").read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
     payload = {
         "source": "GearSkeptic – Hiker Food 2.5",
@@ -270,7 +270,7 @@ def main():
         "stops": stops,
     }
     (OUT / "foods.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"{len(foods)} Lebensmittel, {len(electrolytes)} Elektrolyte, {len(stops)} PCT-Stops -> {OUT/'foods.json'}")
+    print(f"{len(foods)} Lebensmittel, {len(electrolytes)} Elektrolyte, {len(stops)} Stops -> {OUT/'foods.json'}")
     if unknown:
         print("Marken ohne Eintrag in brands.csv (als 'online' gewertet):", ", ".join(sorted(unknown)), file=sys.stderr)
 

@@ -2,7 +2,8 @@
 'use strict';
 (function () {
   const es = {
-    title: 'Planificador de comida de trail', subtitle: 'Calorías por peso, disponibilidad en el PCT, menús que de verdad te apetecen',
+    title: 'Planificador de comida de trail', subtitle: 'Calorías por peso, disponibilidad en PCT, CDT y AT, menús que de verdad te apetecen',
+    boxOnly: s => `📦 ${s}: aquí no hay nada que comprar. El plan muestra lo que va en tu paquete (todas las marcas incl. online).`,
     tabPlan: 'Planificador', tabFoods: 'Alimentos', tabSalt: 'Electrolitos', tabAbout: 'Método',
     resupply: 'Reabastecimiento', shopAt: 'Dónde compras', days: 'Días', kcalDay: 'kcal / día', proteinGoal: 'Proteína objetivo g / día',
     temp: 'Temperatura (necesidad de Na)', prep: 'Preparación', stove: 'Hornillo', nocook: 'Sin preparar', profile: 'Perfil de macros',
@@ -27,7 +28,7 @@
     tempCol: 'Temperatura', naCol: 'Na necesario mg/día', naHint: 'CDR de referencia: 1500 mg Na, 3400 mg K. El planificador muestra cuánto sodio aporta ya tu comida.',
     elecTitle: 'Productos de electrolitos', product: 'Producto', caffeine: 'Cafeína',
     scales: 'Escalas de valoración (de Hiker Food 2.5)', availText: 'La columna «Disponible» es mi propia estimación por marca, no forma parte de la tabla de GearSkeptic:',
-    stopsHint: 'Las paradas del PCT y el tamaño de sus tiendas son orientativos. Compruébalo siempre allí y en FarOut, las tiendas cambian cada temporada.',
+    stopsHint: 'Las paradas de los trails (PCT, CDT, AT) y el tamaño de sus tiendas son orientativos. Compruébalo siempre allí y en FarOut, las tiendas cambian cada temporada.',
     updTitle: 'Actualizar los datos', updText: 'La hoja está en el repo en <code>data/Hiker_Food_2.5.xlsx</code>. Sube una versión nueva y la GitHub Action reconstruye <code>foods.json</code>. La clasificación de marcas está en <code>data/brands.csv</code>, las correcciones de alérgenos en <code>data/allergen_overrides.csv</code>.',
     footer: 'Datos: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Desayuno', meal_drink: 'Bebida', meal_lunch: 'Almuerzo', meal_snack: 'Snacks durante el día', meal_dinner: 'Cena', meal_bump: 'Bump', meal_dessert: 'Postre',
@@ -82,7 +83,8 @@
   };
 
   const fr = {
-    title: 'Planificateur de nourriture trail', subtitle: 'Calories par poids, disponibilité sur le PCT, des menus qui donnent envie',
+    title: 'Planificateur de nourriture trail', subtitle: 'Calories par poids, disponibilité sur le PCT, le CDT et l\'AT, des menus qui donnent envie',
+    boxOnly: s => `📦 ${s} : rien à acheter ici. Le plan montre ce qui va dans ton colis (toutes les marques, y compris en ligne).`,
     tabPlan: 'Planificateur', tabFoods: 'Aliments', tabSalt: 'Électrolytes', tabAbout: 'Méthode',
     resupply: 'Ravitaillement', shopAt: 'Lieu d\'achat', days: 'Jours', kcalDay: 'kcal / jour', proteinGoal: 'Objectif protéines g / jour',
     temp: 'Température (besoin en Na)', prep: 'Préparation', stove: 'Réchaud', nocook: 'Sans préparation', profile: 'Profil de macros',
@@ -107,7 +109,7 @@
     tempCol: 'Température', naCol: 'Besoin Na mg/jour', naHint: 'AJR pour comparaison : 1500 mg Na, 3400 mg K. Le planificateur montre combien de sodium ta nourriture apporte déjà.',
     elecTitle: 'Produits électrolytes', product: 'Produit', caffeine: 'Caféine',
     scales: 'Échelles d\'évaluation (de Hiker Food 2.5)', availText: 'La colonne « Disponible » est ma propre estimation par marque, elle ne fait pas partie du tableau de GearSkeptic :',
-    stopsHint: 'Les étapes du PCT et la taille des magasins sont indicatives. Vérifie toujours sur place et dans FarOut, les magasins changent chaque saison.',
+    stopsHint: 'Les étapes des trails (PCT, CDT, AT) et la taille des magasins sont indicatives. Vérifie toujours sur place et dans FarOut, les magasins changent chaque saison.',
     updTitle: 'Mettre à jour les données', updText: 'Le tableur se trouve dans le dépôt sous <code>data/Hiker_Food_2.5.xlsx</code>. Dépose une nouvelle version et pousse ; la GitHub Action reconstruit <code>foods.json</code>. Le classement des marques est dans <code>data/brands.csv</code>, les corrections d\'allergènes dans <code>data/allergen_overrides.csv</code>.',
     footer: 'Données : GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Petit-déjeuner', meal_drink: 'Boisson', meal_lunch: 'Midi', meal_snack: 'Snacks dans la journée', meal_dinner: 'Dîner', meal_bump: 'Bump', meal_dessert: 'Dessert',
