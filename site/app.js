@@ -18,6 +18,10 @@ const I18N = {
     allergyTitle: 'Allergien / Unverträglichkeiten',
     allergyHint: 'Erkennung nur über Produktname und Kategorie, die Tabelle enthält keine Zutatenlisten. Bei echter Allergie immer das Etikett prüfen, auch auf „kann Spuren enthalten“.',
     hideAllergens: 'meine Allergene ausblenden',
+    dir: 'Laufrichtung',
+    hDir: 'NOBO = Richtung Norden (PCT: Mexiko → Kanada, CDT: Mexiko → Kanada, AT: Georgia → Maine). SOBO = Richtung Süden. Bestimmt die Reihenfolge der Stops und welcher Stop als nächster Resupply gilt. Die Meilenangaben bleiben die üblichen NOBO-Meilen, die Distanzen stimmen in beide Richtungen.',
+    tipNobo: 'Northbound: von Süden nach Norden. PCT/CDT ab der mexikanischen Grenze, AT ab Springer Mountain.',
+    tipSobo: 'Southbound: von Norden nach Süden. PCT/CDT ab der kanadischen Grenze, AT ab Katahdin.',
     nextStop: 'Nächster Resupply', manualDays: '– Tage selbst wählen –', dayDist: 'Tagesdistanz', reserve: 'Reserve (Tage)',
     legInfo: (d, ex, days) => `🥾 ${d} bis dorthin = ${ex} Tage Laufzeit → ${days} Tage Essen eingeplant`,
     hLeg: 'Wähl den nächsten Stop auf demselben Trail. Aus der Meilen-Differenz und deiner Tagesdistanz rechnet der Planer die reine Laufzeit, addiert die Reserve und rundet auf ganze Tage auf. Das setzt den Tage-Regler automatisch. Wege vom Trail in den Ort (Hitch, Side Trail) sind nicht eingerechnet. Wer den Tage-Regler selbst verschiebt, schaltet auf „Tage selbst wählen“.',
@@ -105,6 +109,10 @@ const I18N = {
     allergyTitle: 'Allergies / intolerances',
     allergyHint: 'Detected from product name and class only; the sheet has no ingredient lists. With a real allergy always check the label, including "may contain".',
     hideAllergens: 'hide my allergens',
+    dir: 'Direction',
+    hDir: 'NOBO = northbound (PCT and CDT: Mexico → Canada, AT: Georgia → Maine). SOBO = southbound. Sets the order of the stops and which stop counts as the next resupply. Mile numbers stay the usual NOBO miles; distances are correct both ways.',
+    tipNobo: 'Northbound: south to north. PCT/CDT from the Mexican border, AT from Springer Mountain.',
+    tipSobo: 'Southbound: north to south. PCT/CDT from the Canadian border, AT from Katahdin.',
     nextStop: 'Next resupply', manualDays: '– choose days myself –', dayDist: 'Daily distance', reserve: 'Buffer (days)',
     legInfo: (d, ex, days) => `🥾 ${d} to get there = ${ex} days of hiking → ${days} days of food planned`,
     hLeg: 'Pick the next stop on the same trail. From the mile difference and your daily distance the planner works out the hiking time, adds the buffer and rounds up to whole days. This sets the days slider automatically. Walking or hitching between trail and town is not included. Moving the days slider yourself switches to "choose days myself".',
@@ -210,7 +218,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: browserLang(), units: 'metric', toStop: 'auto', dayMi: 20, reserve: 0.5, allergens: [], lacChoc: false, lacPowder: false,
+  lang: browserLang(), units: 'metric', dir: 'nobo', toStop: 'auto', dayMi: 20, reserve: 0.5, allergens: [], lacChoc: false, lacPowder: false,
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
@@ -697,11 +705,12 @@ function applyLang() {
   $$('[data-help]').forEach(el => { el.dataset.tip = t(el.dataset.help); el.setAttribute('aria-label', t(el.dataset.help)); });
   $$('#s-lang button').forEach(b => b.classList.toggle('on', b.dataset.v === st.lang));
   $$('#s-units button').forEach(b => b.classList.toggle('on', b.dataset.v === st.units));
+  $$('#s-dir button').forEach(b => b.classList.toggle('on', b.dataset.v === st.dir));
 
   const sel = $('#s-stop');
   sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>
     <optgroup label="${t('optGeneric')}">${['super', 'market', 'gas'].map(k => `<option value="t:${k}">${TIER_ICON[k]} ${tierLabel(k)}</option>`).join('')}</optgroup>
-    ${TRAILS.map(tr => `<optgroup label="${tr[1]} (NOBO)">${D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === tr[0]).map(([s, i]) => `<option value="s:${i}">${tr[0]} · ${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('')}</optgroup>`).join('')}`;
+    ${TRAILS.map(tr => `<optgroup label="${tr[1]} (${st.dir === 'sobo' ? 'SOBO' : 'NOBO'})">${D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === tr[0]).sort((a, b) => st.dir === 'sobo' ? b[0].mile - a[0].mile : a[0].mile - b[0].mile).map(([s, i]) => `<option value="s:${i}">${tr[0]} · ${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('')}</optgroup>`).join('')}`;
   sel.value = st.stop;
   stopInfo();
   drawLeg();
@@ -769,7 +778,9 @@ function legCandidates() {
   const s = currentStop();
   if (!s || s.generic || s.mile == null) return [];
   const tr = s.trail || 'PCT';
-  return D.stops.map((x, i) => [x, i]).filter(([x]) => (x.trail || 'PCT') === tr && x.mile > s.mile);
+  const sobo = S.settings.dir === 'sobo';
+  return D.stops.map((x, i) => [x, i]).filter(([x]) => (x.trail || 'PCT') === tr && (sobo ? x.mile < s.mile : x.mile > s.mile))
+    .sort((a, b) => sobo ? b[0].mile - a[0].mile : a[0].mile - b[0].mile);
 }
 function drawLeg() {
   const st = S.settings, list = legCandidates();
@@ -779,7 +790,7 @@ function drawLeg() {
   if (st.toStop === 'auto' || (st.toStop !== '' && !list.some(([, i]) => String(i) === String(st.toStop)))) st.toStop = String(list[0][1]);
   const dist = mi => IMP() ? `${fmt(mi)} mi` : `${fmt(mi * KM)} km`;
   $('#s-to').innerHTML = `<option value="">${t('manualDays')}</option>` + list.map(([x, i]) =>
-    `<option value="${i}">${esc(x.name)} (+${dist(x.mile - s.mile)})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
+    `<option value="${i}">${esc(x.name)} (+${dist(Math.abs(x.mile - s.mile))})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
   $('#s-to').value = st.toStop;
   $('#l-daydist').innerHTML = `${t('dayDist')} (${IMP() ? 'mi' : 'km'})`;
   $('#s-daydist').value = IMP() ? Math.round(st.dayMi) : Math.round(st.dayMi * KM);
@@ -791,7 +802,7 @@ function updateLeg() {
   if (st.toStop === '' || !s || s.generic || !legCandidates().length) { $('#leg-info').textContent = ''; return; }
   const to = D.stops[+st.toStop];
   if (!to) return;
-  const mi = to.mile - s.mile, exact = mi / st.dayMi;
+  const mi = Math.abs(to.mile - s.mile), exact = mi / st.dayMi;
   const days = clamp(Math.ceil(exact + (+st.reserve) - 1e-9), 1, 14);
   st.days = days;
   $('#s-days').value = days; $('#v-days').textContent = days;
@@ -818,6 +829,7 @@ function initUI() {
   });
 
   $('#s-stop').onchange = e => { st.stop = e.target.value; st.toStop = 'auto'; stopInfo(); drawLeg(); save(); generate(); };
+  $$('#s-dir button').forEach(b => b.onclick = () => { st.dir = b.dataset.v; st.toStop = 'auto'; save(); applyLang(); generate(); });
   $('#s-to').onchange = e => { st.toStop = e.target.value; updateLeg(); save(); generate(); };
   $('#s-daydist').onchange = e => { const v = +e.target.value; if (v > 0) st.dayMi = IMP() ? v : v / KM; updateLeg(); save(); generate(); };
   $('#s-reserve').onchange = e => { st.reserve = +e.target.value; updateLeg(); save(); generate(); };

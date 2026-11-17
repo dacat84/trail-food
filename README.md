@@ -6,7 +6,7 @@ Resupply- und Menüplaner für Thru-Hiker (PCT, CDT, AT) auf Basis von **GearSke
 
 ## Was die Seite kann
 
-- **Planer:** Etappe vom Einkaufsort bis zum nächsten Resupply mit Tagesdistanz (km/mi) und Reserve, daraus werden die Tage berechnet (oder 1–14 Tage manuell), kcal- und Protein-Ziel, Einkaufsort (generisch oder Resupply-Stop auf PCT, CDT oder AT; reine Paket-Stops wie Pie Town zeigen, was ins Paket gehört), Kocher / Cold Soak / ohne Kochen.
+- **Planer:** Laufrichtung NOBO oder SOBO, Etappe vom Einkaufsort bis zum nächsten Resupply mit Tagesdistanz (km/mi) und Reserve, daraus werden die Tage berechnet (oder 1–14 Tage manuell), kcal- und Protein-Ziel, Einkaufsort (generisch oder Resupply-Stop auf PCT, CDT oder AT; reine Paket-Stops wie Pie Town zeigen, was ins Paket gehört), Kocher / Cold Soak / ohne Kochen.
   Schlägt Frühstück, Mittags-Wrap, Snacks, Abendessen und Öl-/Butter-Bumps vor, optimiert auf kcal pro Gramm und
   GearSkeptics Makro-Bewertung. Regler zwischen „leichtestes Gewicht“ und „Lust & Favoriten“, plus Abwechslung.
   Positionen sperren 🔒, tauschen 🔄, Menge ändern, ❤️ / 👎 merken. Einkaufsliste nach Ladentyp, als Text/CSV/Druck.
