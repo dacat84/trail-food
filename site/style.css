@@ -180,3 +180,4 @@ footer{text-align:center;font-size:.8rem;color:var(--mute);padding:24px}
 .legi{background:#eef5f0;border-radius:8px;padding:6px 10px;color:var(--ink)}
 .legi:empty{display:none}
 #leg-box[hidden]{display:none}
+#dir-box[hidden],#custom-row[hidden]{display:none}

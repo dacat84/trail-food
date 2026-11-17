@@ -298,12 +298,14 @@ def main():
         })
 
     stops = json.loads((DATA / "stops.json").read_text(encoding="utf-8"))
+    trails = json.loads((DATA / "trails.json").read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
     payload = {
         "source": "GearSkeptic – Hiker Food 2.5",
         "foods": foods,
         "electrolytes": electrolytes,
         "stops": stops,
+        "trails": trails,
     }
     (OUT / "foods.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"{len(foods)} Lebensmittel, {len(electrolytes)} Elektrolyte, {len(stops)} Stops -> {OUT/'foods.json'}")

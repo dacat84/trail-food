@@ -36,7 +36,12 @@
     <aside class="settings card">
       <h2 data-i18n="resupply"></h2>
 
-      <div class="field">
+      <label class="field">
+        <span><span data-i18n="trail"></span> <i class="help" tabindex="0" data-help="hTrail">?</i></span>
+        <select id="s-trail"></select>
+      </label>
+
+      <div class="field" id="dir-box">
         <span><span data-i18n="dir"></span> <i class="help" tabindex="0" data-help="hDir">?</i></span>
         <div class="seg" id="s-dir">
           <button data-v="nobo" data-tipkey="tipNobo">NOBO ↑</button>
@@ -54,6 +59,10 @@
         <label class="field">
           <span><span data-i18n="nextStop"></span> <i class="help" tabindex="0" data-help="hLeg">?</i></span>
           <select id="s-to"></select>
+        </label>
+        <label class="field" id="custom-row">
+          <span id="l-custom"></span>
+          <input type="number" id="s-custom" min="1" max="2000" step="1">
         </label>
         <div class="row2">
           <label class="field">

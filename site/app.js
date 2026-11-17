@@ -4,7 +4,7 @@
 // ---------- i18n ----------
 const I18N = {
   de: {
-    title: 'Trail Food Planer', subtitle: 'kcal pro Gewicht, Erreichbarkeit auf PCT, CDT und AT, Menüs auf die du Lust hast',
+    title: 'Trail Food Planer', subtitle: 'kcal pro Gewicht, Erreichbarkeit auf PCT, CDT, AT und weiteren US-Trails, Menüs auf die du Lust hast',
     boxOnly: s => `📦 ${s}: Hier gibt es nichts zu kaufen. Der Plan zeigt, was ins Paket gehört (alle Marken inkl. online).`,
     tabPlan: 'Planer', tabFoods: 'Lebensmittel', tabSalt: 'Elektrolyte', tabAbout: 'Methode',
     resupply: 'Resupply', shopAt: 'Einkaufsort', days: 'Tage', kcalDay: 'kcal / Tag', proteinGoal: 'Protein-Ziel g / Tag',
@@ -18,6 +18,8 @@ const I18N = {
     allergyTitle: 'Allergien / Unverträglichkeiten',
     allergyHint: 'Erkennung nur über Produktname und Kategorie, die Tabelle enthält keine Zutatenlisten. Bei echter Allergie immer das Etikett prüfen, auch auf „kann Spuren enthalten“.',
     hideAllergens: 'meine Allergene ausblenden',
+    trail: 'Trail', noTrail: '– kein bestimmter Trail –', customLeg: 'Eigene Strecke (Distanz eingeben)', customDist: 'Strecke bis zum nächsten Resupply',
+    hTrail: 'Wähl deinen Trail. Danach stehen nur dessen Resupply-Orte zur Auswahl, und die Distanz zum nächsten Stop wird automatisch berechnet. Für Trails, die hier fehlen, oder einen eigenen Abschnitt: „kein bestimmter Trail“ wählen und bei „Nächster Resupply“ die eigene Strecke eingeben. Bei Trails mit ~ sind die Meilen grobe Werte.',
     dir: 'Laufrichtung',
     hDir: 'NOBO = Richtung Norden (PCT: Mexiko → Kanada, CDT: Mexiko → Kanada, AT: Georgia → Maine). SOBO = Richtung Süden. Bestimmt die Reihenfolge der Stops und welcher Stop als nächster Resupply gilt. Die Meilenangaben bleiben die üblichen NOBO-Meilen, die Distanzen stimmen in beide Richtungen.',
     tipNobo: 'Northbound: von Süden nach Norden. PCT/CDT ab der mexikanischen Grenze, AT ab Springer Mountain.',
@@ -41,7 +43,7 @@ const I18N = {
     tempCol: 'Temperatur', naCol: 'Na-Bedarf mg/Tag', naHint: 'RDA zum Vergleich: 1500 mg Na, 3400 mg K. Der Planer zeigt, wie viel Natrium die gewählte Verpflegung schon liefert.',
     elecTitle: 'Elektrolyt-Produkte', product: 'Produkt', caffeine: 'Koffein',
     scales: 'Bewertungsskalen (aus Hiker Food 2.5)', availText: 'Die Spalte „Erhältlich“ ist eine eigene Einschätzung pro Marke, nicht aus GearSkeptics Tabelle:',
-    stopsHint: 'Die Trail-Stops (PCT, CDT, AT) und ihre Ladengrößen sind grobe Richtwerte. Vor Ort und in FarOut immer gegenchecken, Läden ändern sich jede Saison.',
+    stopsHint: 'Die Trail-Stops und ihre Ladengrößen sind grobe Richtwerte. Vor Ort und in FarOut immer gegenchecken, Läden ändern sich jede Saison.',
     updTitle: 'Daten aktualisieren', updText: 'Die Excel liegt im Repo unter <code>data/Hiker_Food_2.5.xlsx</code>. Neue Version reinlegen und pushen, die GitHub Action baut <code>foods.json</code> neu. Marken-Einstufungen stehen in <code>data/brands.csv</code>, Korrekturen zu Allergenen in <code>data/allergen_overrides.csv</code>.',
     footer: 'Daten: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Frühstück', meal_drink: 'Drink', meal_lunch: 'Mittag', meal_snack: 'Snacks über den Tag', meal_dinner: 'Abendessen', meal_bump: 'Bump', meal_dessert: 'Dessert',
@@ -95,7 +97,7 @@ const I18N = {
     tags: { schoko: 'Schoko', erdnuss: 'Erdnuss', nuss: 'Nüsse', 'käse': 'Käse', fleisch: 'Fleisch', scharf: 'Scharf', frucht: 'Fruchtig', kaffee: 'Kaffee', asiatisch: 'Asiatisch', mexikanisch: 'Mexikanisch', pasta: 'Pasta', reis: 'Reis', kartoffel: 'Kartoffel', kokos: 'Kokos' },
   },
   en: {
-    title: 'Trail Food Planner', subtitle: 'Calories per weight, availability on the PCT, CDT and AT, menus you actually crave',
+    title: 'Trail Food Planner', subtitle: 'Calories per weight, availability on the PCT, CDT, AT and more US trails, menus you actually crave',
     boxOnly: s => `📦 ${s}: nothing to buy here. The plan shows what goes in your box (all brands incl. online).`,
     tabPlan: 'Planner', tabFoods: 'Foods', tabSalt: 'Electrolytes', tabAbout: 'Method',
     resupply: 'Resupply', shopAt: 'Shopping at', days: 'Days', kcalDay: 'kcal / day', proteinGoal: 'Protein goal g / day',
@@ -109,6 +111,8 @@ const I18N = {
     allergyTitle: 'Allergies / intolerances',
     allergyHint: 'Detected from product name and class only; the sheet has no ingredient lists. With a real allergy always check the label, including "may contain".',
     hideAllergens: 'hide my allergens',
+    trail: 'Trail', noTrail: '– no specific trail –', customLeg: 'Custom distance (enter it)', customDist: 'Distance to next resupply',
+    hTrail: 'Pick your trail. Only its resupply stops are listed then, and the distance to the next stop is calculated automatically. For trails not listed here, or your own section: choose "no specific trail" and enter a custom distance under "Next resupply". Trails marked ~ have rough mileage.',
     dir: 'Direction',
     hDir: 'NOBO = northbound (PCT and CDT: Mexico → Canada, AT: Georgia → Maine). SOBO = southbound. Sets the order of the stops and which stop counts as the next resupply. Mile numbers stay the usual NOBO miles; distances are correct both ways.',
     tipNobo: 'Northbound: south to north. PCT/CDT from the Mexican border, AT from Springer Mountain.',
@@ -132,7 +136,7 @@ const I18N = {
     tempCol: 'Temperature', naCol: 'Na need mg/day', naHint: 'RDA for comparison: 1500 mg Na, 3400 mg K. The planner shows how much sodium your food already provides.',
     elecTitle: 'Electrolyte products', product: 'Product', caffeine: 'Caffeine',
     scales: 'Rating scales (from Hiker Food 2.5)', availText: 'The "Available" column is my own per-brand estimate, not part of GearSkeptic\'s sheet:',
-    stopsHint: 'Trail stops (PCT, CDT, AT) and store sizes are rough guidance. Always double-check on site and in FarOut, stores change every season.',
+    stopsHint: 'Trail stops and store sizes are rough guidance. Always double-check on site and in FarOut, stores change every season.',
     updTitle: 'Updating the data', updText: 'The spreadsheet lives in the repo at <code>data/Hiker_Food_2.5.xlsx</code>. Drop in a new version and push; the GitHub Action rebuilds <code>foods.json</code>. Brand ratings are in <code>data/brands.csv</code>, allergen corrections in <code>data/allergen_overrides.csv</code>.',
     footer: 'Data: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Breakfast', meal_drink: 'Drink', meal_lunch: 'Lunch', meal_snack: 'Snacks through the day', meal_dinner: 'Dinner', meal_bump: 'Bump', meal_dessert: 'Dessert',
@@ -205,7 +209,6 @@ function browserLang() {
 const OZ = 28.3495;
 const TIER_ICON = { gas: '⛽', market: '🏪', super: '🛒', outdoor: '🏕', online: '📦' };
 const TIER_RANK = { gas: 0, market: 1, super: 2, outdoor: 3, online: 4 };
-const TRAILS = [['PCT', 'Pacific Crest Trail'], ['CDT', 'Continental Divide Trail'], ['AT', 'Appalachian Trail']];
 const MEALS = ['breakfast', 'drink', 'lunch', 'snack', 'dinner', 'bump', 'dessert'];
 const NA_BY_TEMP = { 15: 3300, 20: 4100, 25: 5000, 30: 6100, 35: 7500, 40: 9500 };
 const W = ['var(--w0)', 'var(--w1)', 'var(--w2)', 'var(--w3)', 'var(--w4)', 'var(--w5)'];
@@ -218,7 +221,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: browserLang(), units: 'metric', dir: 'nobo', toStop: 'auto', dayMi: 20, reserve: 0.5, allergens: [], lacChoc: false, lacPowder: false,
+  lang: browserLang(), units: 'metric', trail: null, dir: 'nobo', toStop: 'auto', customMi: 60, dayMi: 20, reserve: 0.5, allergens: [], lacChoc: false, lacPowder: false,
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
@@ -697,7 +700,7 @@ function applyLang() {
   const blocks = new Set($$('[data-lang]').map(el => el.dataset.lang));
   const show = blocks.has(st.lang) ? st.lang : 'en';
   $$('[data-lang]').forEach(el => { el.hidden = el.dataset.lang !== show; });
-  document.title = `${t('title')} · PCT · CDT · AT`;
+  document.title = `${t('title')} · PCT · CDT · AT · CT · AZT`;
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
@@ -707,13 +710,7 @@ function applyLang() {
   $$('#s-units button').forEach(b => b.classList.toggle('on', b.dataset.v === st.units));
   $$('#s-dir button').forEach(b => b.classList.toggle('on', b.dataset.v === st.dir));
 
-  const sel = $('#s-stop');
-  sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>
-    <optgroup label="${t('optGeneric')}">${['super', 'market', 'gas'].map(k => `<option value="t:${k}">${TIER_ICON[k]} ${tierLabel(k)}</option>`).join('')}</optgroup>
-    ${TRAILS.map(tr => `<optgroup label="${tr[1]} (${st.dir === 'sobo' ? 'SOBO' : 'NOBO'})">${D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === tr[0]).sort((a, b) => st.dir === 'sobo' ? b[0].mile - a[0].mile : a[0].mile - b[0].mile).map(([s, i]) => `<option value="s:${i}">${tr[0]} · ${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('')}</optgroup>`).join('')}`;
-  sel.value = st.stop;
-  stopInfo();
-  drawLeg();
+  drawTrail();
 
   $('#s-temp').innerHTML = Object.keys(NA_BY_TEMP).map(c => `<option value="${c}">${tempLabel(+c)}</option>`).join('');
   $('#s-temp').value = st.temp;
@@ -782,16 +779,54 @@ function legCandidates() {
   return D.stops.map((x, i) => [x, i]).filter(([x]) => (x.trail || 'PCT') === tr && (sobo ? x.mile < s.mile : x.mile > s.mile))
     .sort((a, b) => sobo ? b[0].mile - a[0].mile : a[0].mile - b[0].mile);
 }
+function trailMeta(id) { return (D.trails || []).find(x => x.id === id); }
+function trailStops(id) {
+  const sobo = S.settings.dir === 'sobo';
+  return D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === id).sort((a, b) => sobo ? b[0].mile - a[0].mile : a[0].mile - b[0].mile);
+}
+function drawTrail() {
+  const st = S.settings;
+  if (st.trail === null || st.trail === undefined) {
+    const s = st.stop && st.stop.startsWith('s:') ? D.stops[+st.stop.slice(2)] : null;
+    st.trail = s ? (s.trail || 'PCT') : '';
+  }
+  $('#s-trail').innerHTML = `<option value="">${t('noTrail')}</option>` +
+    (D.trails || []).map(x => `<option value="${x.id}">${esc(x.name)} · ${x.approx ? '~' : ''}${fmt(x.len)} mi</option>`).join('');
+  $('#s-trail').value = st.trail;
+  const tm = trailMeta(st.trail);
+  $('#dir-box').hidden = !tm;
+  if (tm) {
+    const [bf, bs] = $$('#s-dir button');
+    bf.textContent = `${tm.fwd}${tm.fwd === 'NOBO' ? ' ↑' : tm.fwd === 'SOBO' ? ' ↓' : ''}`;
+    bs.textContent = `${tm.rev}${tm.rev === 'SOBO' ? ' ↓' : tm.rev === 'NOBO' ? ' ↑' : ''}`;
+    bf.dataset.tip = tm.fwd === 'NOBO' ? t('tipNobo') : tm.fwd === 'SOBO' ? t('tipSobo') : tm.fwd;
+    bs.dataset.tip = tm.rev === 'NOBO' ? t('tipNobo') : tm.rev === 'SOBO' ? t('tipSobo') : tm.rev;
+  }
+  const sel = $('#s-stop');
+  if (tm) {
+    sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>` +
+      trailStops(tm.id).map(([s, i]) => `<option value="s:${i}">${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('');
+  } else {
+    sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>` +
+      ['super', 'market', 'gas'].map(k => `<option value="t:${k}">${TIER_ICON[k]} ${tierLabel(k)}</option>`).join('');
+  }
+  if (![...sel.options].some(o => o.value === st.stop)) st.stop = 'all';
+  sel.value = st.stop;
+  stopInfo();
+  drawLeg();
+}
 function drawLeg() {
   const st = S.settings, list = legCandidates();
-  $('#leg-box').hidden = !list.length;
-  if (!list.length) return;
   const s = currentStop();
-  if (st.toStop === 'auto' || (st.toStop !== '' && !list.some(([, i]) => String(i) === String(st.toStop)))) st.toStop = String(list[0][1]);
+  if (st.toStop === 'auto') st.toStop = list.length ? String(list[0][1]) : '';
+  if (st.toStop !== '' && st.toStop !== 'custom' && !list.some(([, i]) => String(i) === String(st.toStop))) st.toStop = list.length ? String(list[0][1]) : '';
   const dist = mi => IMP() ? `${fmt(mi)} mi` : `${fmt(mi * KM)} km`;
-  $('#s-to').innerHTML = `<option value="">${t('manualDays')}</option>` + list.map(([x, i]) =>
+  $('#s-to').innerHTML = `<option value="">${t('manualDays')}</option><option value="custom">📏 ${t('customLeg')}</option>` + list.map(([x, i]) =>
     `<option value="${i}">${esc(x.name)} (+${dist(Math.abs(x.mile - s.mile))})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
   $('#s-to').value = st.toStop;
+  $('#custom-row').hidden = st.toStop !== 'custom';
+  $('#l-custom').innerHTML = `${t('customDist')} (${IMP() ? 'mi' : 'km'})`;
+  $('#s-custom').value = IMP() ? Math.round(st.customMi) : Math.round(st.customMi * KM);
   $('#l-daydist').innerHTML = `${t('dayDist')} (${IMP() ? 'mi' : 'km'})`;
   $('#s-daydist').value = IMP() ? Math.round(st.dayMi) : Math.round(st.dayMi * KM);
   $('#s-reserve').value = String(st.reserve);
@@ -799,10 +834,16 @@ function drawLeg() {
 }
 function updateLeg() {
   const st = S.settings, s = currentStop();
-  if (st.toStop === '' || !s || s.generic || !legCandidates().length) { $('#leg-info').textContent = ''; return; }
-  const to = D.stops[+st.toStop];
-  if (!to) return;
-  const mi = Math.abs(to.mile - s.mile), exact = mi / st.dayMi;
+  $('#custom-row').hidden = st.toStop !== 'custom';
+  let mi;
+  if (st.toStop === 'custom') mi = st.customMi;
+  else {
+    if (st.toStop === '' || !s || s.generic) { $('#leg-info').textContent = ''; return; }
+    const to = D.stops[+st.toStop];
+    if (!to) { $('#leg-info').textContent = ''; return; }
+    mi = Math.abs(to.mile - s.mile);
+  }
+  const exact = mi / st.dayMi;
   const days = clamp(Math.ceil(exact + (+st.reserve) - 1e-9), 1, 14);
   st.days = days;
   $('#s-days').value = days; $('#v-days').textContent = days;
@@ -828,8 +869,19 @@ function initUI() {
     save(); applyLang();
   });
 
-  $('#s-stop').onchange = e => { st.stop = e.target.value; st.toStop = 'auto'; stopInfo(); drawLeg(); save(); generate(); };
-  $$('#s-dir button').forEach(b => b.onclick = () => { st.dir = b.dataset.v; st.toStop = 'auto'; save(); applyLang(); generate(); });
+  $('#s-stop').onchange = e => { st.stop = e.target.value; if (st.toStop !== 'custom') st.toStop = 'auto'; stopInfo(); drawLeg(); save(); generate(); };
+  $$('#s-dir button').forEach(b => b.onclick = () => {
+    st.dir = b.dataset.v; if (st.toStop !== 'custom') st.toStop = 'auto';
+    if (st.trail && !legCandidates().length) { const first = trailStops(st.trail)[0]; if (first) st.stop = 's:' + first[1]; }
+    save(); drawTrail(); $$('#s-dir button').forEach(x => x.classList.toggle('on', x.dataset.v === st.dir)); generate(); });
+  $('#s-trail').onchange = e => {
+    st.trail = e.target.value;
+    const first = st.trail ? trailStops(st.trail)[0] : null;
+    st.stop = first ? 's:' + first[1] : 'all';
+    if (st.toStop !== 'custom') st.toStop = 'auto';
+    save(); drawTrail(); generate();
+  };
+  $('#s-custom').onchange = e => { const v = +e.target.value; if (v > 0) st.customMi = IMP() ? v : v / KM; updateLeg(); save(); generate(); };
   $('#s-to').onchange = e => { st.toStop = e.target.value; updateLeg(); save(); generate(); };
   $('#s-daydist').onchange = e => { const v = +e.target.value; if (v > 0) st.dayMi = IMP() ? v : v / KM; updateLeg(); save(); generate(); };
   $('#s-reserve').onchange = e => { st.reserve = +e.target.value; updateLeg(); save(); generate(); };

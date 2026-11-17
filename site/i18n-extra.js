@@ -2,7 +2,7 @@
 'use strict';
 (function () {
   const es = {
-    title: 'Planificador de comida de trail', subtitle: 'Calorías por peso, disponibilidad en PCT, CDT y AT, menús que de verdad te apetecen',
+    title: 'Planificador de comida de trail', subtitle: 'Calorías por peso, disponibilidad en PCT, CDT, AT y más trails de EE. UU., menús que de verdad te apetecen',
     boxOnly: s => `📦 ${s}: aquí no hay nada que comprar. El plan muestra lo que va en tu paquete (todas las marcas incl. online).`,
     tabPlan: 'Planificador', tabFoods: 'Alimentos', tabSalt: 'Electrolitos', tabAbout: 'Método',
     resupply: 'Reabastecimiento', shopAt: 'Dónde compras', days: 'Días', kcalDay: 'kcal / día', proteinGoal: 'Proteína objetivo g / día',
@@ -15,6 +15,8 @@
     allergyTitle: 'Alergias / intolerancias',
     allergyHint: 'Detección solo por nombre de producto y categoría; la tabla no tiene listas de ingredientes. Con una alergia real revisa siempre la etiqueta, incluido «puede contener trazas».',
     hideAllergens: 'ocultar mis alérgenos',
+    trail: 'Trail', noTrail: '– ningún trail concreto –', customLeg: 'Distancia propia (introducir)', customDist: 'Distancia al próximo reabastecimiento',
+    hTrail: 'Elige tu trail. Solo se listan sus paradas y la distancia a la siguiente se calcula sola. Para trails que no están aquí o un tramo propio: elige «ningún trail concreto» e introduce una distancia propia en «Próximo reabastecimiento». En los trails con ~ las millas son aproximadas.',
     dir: 'Dirección',
     hDir: 'NOBO = hacia el norte (PCT y CDT: México → Canadá, AT: Georgia → Maine). SOBO = hacia el sur. Define el orden de las paradas y cuál cuenta como próximo reabastecimiento. Las millas siguen siendo las habituales NOBO; las distancias son correctas en ambos sentidos.',
     tipNobo: 'Northbound: de sur a norte. PCT/CDT desde la frontera mexicana, AT desde Springer Mountain.',
@@ -38,7 +40,7 @@
     tempCol: 'Temperatura', naCol: 'Na necesario mg/día', naHint: 'CDR de referencia: 1500 mg Na, 3400 mg K. El planificador muestra cuánto sodio aporta ya tu comida.',
     elecTitle: 'Productos de electrolitos', product: 'Producto', caffeine: 'Cafeína',
     scales: 'Escalas de valoración (de Hiker Food 2.5)', availText: 'La columna «Disponible» es mi propia estimación por marca, no forma parte de la tabla de GearSkeptic:',
-    stopsHint: 'Las paradas de los trails (PCT, CDT, AT) y el tamaño de sus tiendas son orientativos. Compruébalo siempre allí y en FarOut, las tiendas cambian cada temporada.',
+    stopsHint: 'Las paradas de los trails y el tamaño de sus tiendas son orientativos. Compruébalo siempre allí y en FarOut, las tiendas cambian cada temporada.',
     updTitle: 'Actualizar los datos', updText: 'La hoja está en el repo en <code>data/Hiker_Food_2.5.xlsx</code>. Sube una versión nueva y la GitHub Action reconstruye <code>foods.json</code>. La clasificación de marcas está en <code>data/brands.csv</code>, las correcciones de alérgenos en <code>data/allergen_overrides.csv</code>.',
     footer: 'Datos: GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Desayuno', meal_drink: 'Bebida', meal_lunch: 'Almuerzo', meal_snack: 'Snacks durante el día', meal_dinner: 'Cena', meal_bump: 'Bump', meal_dessert: 'Postre',
@@ -93,7 +95,7 @@
   };
 
   const fr = {
-    title: 'Planificateur de nourriture trail', subtitle: 'Calories par poids, disponibilité sur le PCT, le CDT et l\'AT, des menus qui donnent envie',
+    title: 'Planificateur de nourriture trail', subtitle: 'Calories par poids, disponibilité sur le PCT, le CDT, l\'AT et d\'autres trails américains, des menus qui donnent envie',
     boxOnly: s => `📦 ${s} : rien à acheter ici. Le plan montre ce qui va dans ton colis (toutes les marques, y compris en ligne).`,
     tabPlan: 'Planificateur', tabFoods: 'Aliments', tabSalt: 'Électrolytes', tabAbout: 'Méthode',
     resupply: 'Ravitaillement', shopAt: 'Lieu d\'achat', days: 'Jours', kcalDay: 'kcal / jour', proteinGoal: 'Objectif protéines g / jour',
@@ -106,6 +108,8 @@
     allergyTitle: 'Allergies / intolérances',
     allergyHint: 'Détection uniquement par nom de produit et catégorie ; le tableau ne contient pas de listes d\'ingrédients. En cas d\'allergie réelle, vérifie toujours l\'étiquette, y compris « peut contenir des traces ».',
     hideAllergens: 'masquer mes allergènes',
+    trail: 'Trail', noTrail: '– aucun trail précis –', customLeg: 'Distance personnalisée (à saisir)', customDist: 'Distance jusqu\'au prochain ravitaillement',
+    hTrail: 'Choisis ton trail. Seules ses étapes sont alors listées et la distance jusqu\'à la suivante est calculée automatiquement. Pour un trail absent ou ta propre section : choisis « aucun trail précis » et saisis une distance personnalisée sous « Prochain ravitaillement ». Les trails marqués ~ ont des miles approximatifs.',
     dir: 'Sens de marche',
     hDir: 'NOBO = vers le nord (PCT et CDT : Mexique → Canada, AT : Géorgie → Maine). SOBO = vers le sud. Détermine l\'ordre des étapes et quelle étape compte comme prochain ravitaillement. Les miles restent les miles NOBO habituels ; les distances sont justes dans les deux sens.',
     tipNobo: 'Northbound : du sud au nord. PCT/CDT depuis la frontière mexicaine, AT depuis Springer Mountain.',
@@ -129,7 +133,7 @@
     tempCol: 'Température', naCol: 'Besoin Na mg/jour', naHint: 'AJR pour comparaison : 1500 mg Na, 3400 mg K. Le planificateur montre combien de sodium ta nourriture apporte déjà.',
     elecTitle: 'Produits électrolytes', product: 'Produit', caffeine: 'Caféine',
     scales: 'Échelles d\'évaluation (de Hiker Food 2.5)', availText: 'La colonne « Disponible » est ma propre estimation par marque, elle ne fait pas partie du tableau de GearSkeptic :',
-    stopsHint: 'Les étapes des trails (PCT, CDT, AT) et la taille des magasins sont indicatives. Vérifie toujours sur place et dans FarOut, les magasins changent chaque saison.',
+    stopsHint: 'Les étapes des trails et la taille des magasins sont indicatives. Vérifie toujours sur place et dans FarOut, les magasins changent chaque saison.',
     updTitle: 'Mettre à jour les données', updText: 'Le tableur se trouve dans le dépôt sous <code>data/Hiker_Food_2.5.xlsx</code>. Dépose une nouvelle version et pousse ; la GitHub Action reconstruit <code>foods.json</code>. Le classement des marques est dans <code>data/brands.csv</code>, les corrections d\'allergènes dans <code>data/allergen_overrides.csv</code>.',
     footer: 'Données : GearSkeptic, Hiker Food 2.5',
     meal_breakfast: 'Petit-déjeuner', meal_drink: 'Boisson', meal_lunch: 'Midi', meal_snack: 'Snacks dans la journée', meal_dinner: 'Dîner', meal_bump: 'Bump', meal_dessert: 'Dessert',
