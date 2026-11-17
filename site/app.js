@@ -165,6 +165,20 @@ const I18N = {
   },
 };
 
+if (window.I18N_EXTRA) {
+  I18N.es = Object.assign({}, I18N.en, window.I18N_EXTRA.es);
+  I18N.fr = Object.assign({}, I18N.en, window.I18N_EXTRA.fr);
+}
+const LANGS = ['de', 'en', 'es', 'fr'];
+const LOCALE = { de: 'de-DE', en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
+function browserLang() {
+  for (const l of (navigator.languages || [navigator.language || 'en'])) {
+    const k = String(l).slice(0, 2).toLowerCase();
+    if (LANGS.includes(k)) return k;
+  }
+  return 'en';
+}
+
 // ---------- Konstanten ----------
 const OZ = 28.3495;
 const TIER_ICON = { gas: '⛽', market: '🏪', super: '🛒', outdoor: '🏕', online: '📦' };
@@ -181,7 +195,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: 'en', units: 'metric', allergens: [],
+  lang: browserLang(), units: 'metric', allergens: [],
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
@@ -195,17 +209,17 @@ function save() {
 // ---------- Helfer ----------
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const L = () => I18N[S.settings.lang];
+const L = () => I18N[S.settings.lang] || I18N.en;
 const t = k => L()[k] ?? k;
 const IMP = () => S.settings.units === 'imperial';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const fmt = (x, d = 0) => (x == null || !isFinite(x)) ? '–' : x.toLocaleString(S.settings.lang === 'de' ? 'de-DE' : 'en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (x, d = 0) => (x == null || !isFinite(x)) ? '–' : x.toLocaleString(LOCALE[S.settings.lang] || 'en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const pill = ([txt, lvl]) => `<span class="pill" style="background:${W[lvl]}">${esc(txt)}</span>`;
 function toast(msg) { const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 1800); }
 const fname = f => `${f.b} ${f.n}`.trim();
 const tierLabel = k => t('t_' + k);
-const cls = f => S.settings.lang === 'de' ? f.cde : f.cen;
+const cls = f => { const l = S.settings.lang; if (l === 'de') return f.cde; const m = window.I18N_EXTRA && window.I18N_EXTRA.CLASSES[l]; return (m && m[f.c]) || f.cen; };
 const cToF = c => Math.round(c * 9 / 5 + 32);
 const hasAllergen = f => (f.al || []).some(a => S.settings.allergens.includes(a));
 
@@ -554,7 +568,7 @@ function renderShopping() {
       rows.push([di + 1, t('meal_' + i.meal), f.b, f.n, i.n, f.unit === 'Packung' ? t('package') : t('serv'), Math.round(f.g * i.n), (f.g * i.n / OZ).toFixed(1), Math.round(f.kcal * i.n),
         Math.round((f.fat || 0) * i.n), Math.round((f.carb || 0) * i.n), Math.round((f.pro || 0) * i.n), Math.round((f.na || 0) * i.n), tierLabel(f.tier)]);
     }));
-    const sep = S.settings.lang === 'de' ? ';' : ',';
+    const sep = S.settings.lang === 'en' ? ',' : ';';
     const csv = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(sep)).join('\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
@@ -615,9 +629,9 @@ function foodRows() {
     if (q.length) { const s = `${f.b} ${f.n} ${f.cde} ${f.cen}`.toLowerCase(); if (!q.every(x => s.includes(x))) return false; }
     return true;
   });
-  const k = FB.sort === 'cls' ? (S.settings.lang === 'de' ? 'cde' : 'cen') : FB.sort, dir = FB.asc ? 1 : -1;
+  const k = FB.sort, dir = FB.asc ? 1 : -1;
   rows.sort((a, b) => {
-    const x = a[k], y = b[k];
+    const x = k === 'cls' ? cls(a) : a[k], y = k === 'cls' ? cls(b) : b[k];
     if (x == null) return 1; if (y == null) return -1;
     return (typeof x === 'string' ? x.localeCompare(y) : x - y) * dir;
   });
@@ -655,8 +669,9 @@ function renderElec() {
 function applyLang() {
   const st = S.settings;
   document.documentElement.lang = st.lang;
-  document.body.classList.toggle('lang-de', st.lang === 'de');
-  document.body.classList.toggle('lang-en', st.lang === 'en');
+  const blocks = new Set($$('[data-lang]').map(el => el.dataset.lang));
+  const show = blocks.has(st.lang) ? st.lang : 'en';
+  $$('[data-lang]').forEach(el => { el.hidden = el.dataset.lang !== show; });
   document.title = `${t('title')} · PCT Resupply`;
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
@@ -716,8 +731,8 @@ function drawAllergens() {
     `<button class="chip al ${S.settings.allergens.includes(k) ? 'yes' : ''}" data-al="${k}">${S.settings.allergens.includes(k) ? '🚫 ' : ''}${l}</button>`).join('');
 }
 function renderKeys() {
-  const de = S.settings.lang === 'de', l = L();
-  const n = s => de ? s : s.replace(/,/g, '.');
+  const l = L();
+  const n = s => S.settings.lang === 'en' ? s.replace(/,/g, '.') : s;
   const tbl = (head, cols, rows) => `<table class="keytable"><tr>${[head, ...cols].map(h => `<th>${h}</th>`).join('')}</tr>${rows.join('')}</table>`;
   $('#keys').innerHTML =
     tbl(l.keyWeight, ['kcal/oz', 'kcal/g'], [['< 110', '< 3,88'], ['110–125', '3,88–4,41'], ['125–140', '4,41–4,94'], ['140–155', '4,94–5,47'], ['155–170', '5,47–6,00'], ['> 170', '> 6,00']]

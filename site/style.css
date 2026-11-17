@@ -34,7 +34,7 @@ main{max-width:1400px;margin:0 auto;padding:18px}
 .field>span{display:block;font-size:.8rem;color:var(--mute);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 .field small{text-transform:none;font-weight:400;letter-spacing:0}
 .split{display:flex!important;justify-content:space-between}
-.split em{font-style:normal}
+.split{gap:10px}.split em{font-style:normal}.split em:last-child{text-align:right}
 select,input[type=number],input[type=search]{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -149,7 +149,7 @@ footer{text-align:center;font-size:.8rem;color:var(--mute);padding:24px}
 .seg.dark button+button{border-left-color:rgba(255,255,255,.25)}
 .seg.dark button.on{background:#f4efe2;color:#24382d;font-weight:700}
 .checks i{font-style:normal}
-body.lang-de [data-lang=en], body.lang-en [data-lang=de]{display:none}
+[data-lang][hidden]{display:none}
 @media (max-width:600px){.brand{flex-wrap:wrap}.toggles{width:100%;justify-content:flex-start}}
 
 .chip.al.yes{background:#f7e1db;border-color:var(--warn);color:var(--warn);text-decoration:none}
