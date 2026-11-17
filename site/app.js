@@ -181,7 +181,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: (navigator.language || 'de').toLowerCase().startsWith('de') ? 'de' : 'en', units: 'metric', allergens: [],
+  lang: 'en', units: 'metric', allergens: [],
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
