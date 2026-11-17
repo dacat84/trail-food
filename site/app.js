@@ -805,7 +805,7 @@ function drawTrail() {
   const sel = $('#s-stop');
   if (tm) {
     sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>` +
-      trailStops(tm.id).map(([s, i]) => `<option value="s:${i}">${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('');
+      trailStops(tm.id).map(([s, i]) => `<option value="s:${i}">${s.terminus ? '🚩 ' : ''}${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('');
   } else {
     sel.innerHTML = `<option value="all">📦 ${t('optAll')}</option>` +
       ['super', 'market', 'gas'].map(k => `<option value="t:${k}">${TIER_ICON[k]} ${tierLabel(k)}</option>`).join('');
@@ -822,7 +822,7 @@ function drawLeg() {
   if (st.toStop !== '' && st.toStop !== 'custom' && !list.some(([, i]) => String(i) === String(st.toStop))) st.toStop = list.length ? String(list[0][1]) : '';
   const dist = mi => IMP() ? `${fmt(mi)} mi` : `${fmt(mi * KM)} km`;
   $('#s-to').innerHTML = `<option value="">${t('manualDays')}</option><option value="custom">📏 ${t('customLeg')}</option>` + list.map(([x, i]) =>
-    `<option value="${i}">${esc(x.name)} (+${dist(Math.abs(x.mile - s.mile))})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
+    `<option value="${i}">${x.terminus ? '🚩 ' : ''}${esc(x.name)} (+${dist(Math.abs(x.mile - s.mile))})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
   $('#s-to').value = st.toStop;
   $('#custom-row').hidden = st.toStop !== 'custom';
   $('#l-custom').innerHTML = `${t('customDist')} (${IMP() ? 'mi' : 'km'})`;

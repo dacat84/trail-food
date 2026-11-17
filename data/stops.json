@@ -1095,7 +1095,8 @@
   "tier": "super",
   "outdoor": true,
   "note": "Volle Auswahl vor dem Start",
-  "note_en": "Full selection before the start"
+  "note_en": "Full selection before the start",
+  "terminus": true
  },
  {
   "trail": "CT",
@@ -1230,7 +1231,8 @@
   "tier": "super",
   "outdoor": true,
   "note": "Volle Auswahl",
-  "note_en": "Full selection"
+  "note_en": "Full selection",
+  "terminus": true
  },
  {
   "trail": "JMT",
@@ -1239,7 +1241,8 @@
   "tier": "market",
   "outdoor": true,
   "note": "Village Store, gute Auswahl",
-  "note_en": "Village Store, good selection"
+  "note_en": "Village Store, good selection",
+  "terminus": true
  },
  {
   "trail": "JMT",
@@ -1311,7 +1314,8 @@
   "tier": "market",
   "outdoor": true,
   "note": "Joseph's Bi-Rite",
-  "note_en": "Joseph's Bi-Rite"
+  "note_en": "Joseph's Bi-Rite",
+  "terminus": true
  },
  {
   "trail": "AZT",
@@ -1707,7 +1711,8 @@
   "tier": "super",
   "outdoor": true,
   "note": "Safeway + Outfitter",
-  "note_en": "Safeway + outfitter"
+  "note_en": "Safeway + outfitter",
+  "terminus": true
  },
  {
   "trail": "TRT",
@@ -1770,7 +1775,8 @@
   "tier": "super",
   "outdoor": true,
   "note": "Safeway",
-  "note_en": "Safeway"
+  "note_en": "Safeway",
+  "terminus": true
  },
  {
   "trail": "WON",
@@ -1779,7 +1785,8 @@
   "tier": "gas",
   "outdoor": false,
   "note": "General Store klein, Cache möglich",
-  "note_en": "Small general store, cache possible"
+  "note_en": "Small general store, cache possible",
+  "terminus": true
  },
  {
   "trail": "WON",
@@ -1815,7 +1822,8 @@
   "tier": "gas",
   "outdoor": false,
   "note": "General Store",
-  "note_en": "General store"
+  "note_en": "General store",
+  "terminus": true
  },
  {
   "trail": "SHT",
@@ -1824,7 +1832,8 @@
   "tier": "super",
   "outdoor": true,
   "note": "Volle Auswahl",
-  "note_en": "Full selection"
+  "note_en": "Full selection",
+  "terminus": true
  },
  {
   "trail": "SHT",
@@ -1878,6 +1887,127 @@
   "tier": "none",
   "outdoor": false,
   "note": "Nichts, Ende",
-  "note_en": "Nothing, terminus"
+  "note_en": "Nothing, terminus",
+  "terminus": true
+ },
+ {
+  "trail": "PCT",
+  "name": "Campo (Südterminus)",
+  "mile": 0,
+  "tier": "super",
+  "outdoor": true,
+  "note": "Start: vorher in San Diego einkaufen",
+  "note_en": "Start: shop beforehand in San Diego",
+  "terminus": true
+ },
+ {
+  "trail": "PCT",
+  "name": "Nordterminus / Manning Park",
+  "mile": 2655,
+  "tier": "gas",
+  "outdoor": false,
+  "note": "Ende: Manning Park Lodge mit kleinem Laden. SOBO-Start: vorher in Mazama/Winthrop einkaufen",
+  "note_en": "End: Manning Park Lodge with small store. SOBO start: shop beforehand in Mazama/Winthrop",
+  "terminus": true
+ },
+ {
+  "trail": "CDT",
+  "name": "Crazy Cook Monument (Südterminus)",
+  "mile": 0,
+  "tier": "market",
+  "outdoor": false,
+  "note": "Start: vorher in Lordsburg einkaufen (Shuttle ab dort)",
+  "note_en": "Start: shop beforehand in Lordsburg (shuttle from there)",
+  "terminus": true
+ },
+ {
+  "trail": "CDT",
+  "name": "Waterton / Chief Mountain (Nordterminus)",
+  "mile": 2990,
+  "tier": "market",
+  "outdoor": false,
+  "note": "Ende: kleiner Markt in Waterton. SOBO-Start: vorher in East Glacier einkaufen",
+  "note_en": "End: small market in Waterton. SOBO start: shop beforehand in East Glacier",
+  "terminus": true
+ },
+ {
+  "trail": "AT",
+  "name": "Springer Mountain (Südterminus)",
+  "mile": 0,
+  "tier": "super",
+  "outdoor": true,
+  "note": "Start: vorher in Atlanta oder Dahlonega einkaufen",
+  "note_en": "Start: shop beforehand in Atlanta or Dahlonega",
+  "terminus": true
+ },
+ {
+  "trail": "AT",
+  "name": "Katahdin (Nordterminus)",
+  "mile": 2198,
+  "tier": "none",
+  "outdoor": false,
+  "note": "Ende. SOBO-Start: vorher in Millinocket einkaufen",
+  "note_en": "End. SOBO start: shop beforehand in Millinocket",
+  "terminus": true
+ },
+ {
+  "trail": "AZT",
+  "name": "Mexikanische Grenze (Südterminus)",
+  "mile": 0,
+  "tier": "super",
+  "outdoor": false,
+  "note": "Start: vorher in Sierra Vista oder Tucson einkaufen",
+  "note_en": "Start: shop beforehand in Sierra Vista or Tucson",
+  "terminus": true
+ },
+ {
+  "trail": "AZT",
+  "name": "Utah-Grenze (Nordterminus)",
+  "mile": 800,
+  "tier": "none",
+  "outdoor": false,
+  "note": "Ende. SOBO-Start: vorher in Kanab einkaufen",
+  "note_en": "End. SOBO start: shop beforehand in Kanab",
+  "terminus": true
+ },
+ {
+  "trail": "PNT",
+  "name": "Chief Mountain (Ostterminus)",
+  "mile": 0,
+  "tier": "market",
+  "outdoor": false,
+  "note": "Start: vorher in East Glacier oder St. Mary einkaufen",
+  "note_en": "Start: shop beforehand in East Glacier or St. Mary",
+  "terminus": true
+ },
+ {
+  "trail": "PNT",
+  "name": "Cape Alava (Westterminus)",
+  "mile": 1246,
+  "tier": "none",
+  "outdoor": false,
+  "note": "Ende. Eastbound-Start: vorher in Forks oder Port Angeles einkaufen",
+  "note_en": "End. Eastbound start: shop beforehand in Forks or Port Angeles",
+  "terminus": true
+ },
+ {
+  "trail": "LT",
+  "name": "Massachusetts-Grenze (Südterminus)",
+  "mile": 0,
+  "tier": "super",
+  "outdoor": false,
+  "note": "Start: vorher in Williamstown/North Adams einkaufen",
+  "note_en": "Start: shop beforehand in Williamstown/North Adams",
+  "terminus": true
+ },
+ {
+  "trail": "LT",
+  "name": "Journey's End (Nordterminus)",
+  "mile": 272,
+  "tier": "none",
+  "outdoor": false,
+  "note": "Ende. SOBO-Start: vorher in Jay/Montgomery einkaufen",
+  "note_en": "End. SOBO start: shop beforehand in Jay/Montgomery",
+  "terminus": true
  }
 ]
