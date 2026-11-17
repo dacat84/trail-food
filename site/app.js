@@ -69,6 +69,18 @@ const I18N = {
     hBlocks: 'Welche Mahlzeiten jeder Tag bekommt. Frühstück und Abendessen sind immer dabei, der Rest wird mit Snacks bis zum kcal-Ziel aufgefüllt.\nBump: ein Schuss Öl, Ghee oder Butterpulver ins Abendessen, extrem leicht pro Kalorie.\nMittags-Wrap: Tortilla plus Belag (Nussbutter, Käse oder Wurst).',
     hCraving: 'Ein Klick: Produkte mit diesem Geschmack bekommen einen Bonus. Je weiter rechts der Regler „Lust & Favoriten“ steht, desto stärker wirkt das.\nZweiter Klick: komplett ausgeschlossen.\nDritter Klick: wieder neutral.',
     hAllergy: 'Ausgewählte Allergene werden im Planer komplett ausgeschlossen und in der Lebensmittelliste ausgeblendet (abschaltbar). Erkannt wird über Produktname und Kategorie, eher zu streng als zu locker, aber ohne Garantie. Korrekturen pflegst du in data/allergen_overrides.csv.',
+    tipGs: 'GearSkeptic-Profil: Der Planer peilt ca. 60 % der Kalorien aus Fett an (seine Skala: 60–70 % = „sehr gut“), ein Verhältnis Kohlenhydrate zu Protein von 3 bis 4 und 5–15 % der Kalorien aus Zucker. Ergebnis: sehr leichte Pläne mit vielen Nüssen, Nussbutter, Öl und Schokolade.',
+    tipBal: 'Ausgewogen: klassische Ausdauer-Sporternährung mit ca. 35 % Fett, 47 % Kohlenhydraten und 18 % Protein. Mehr Nudeln, Müsli, Riegel und Trockenobst. Spürbar schwerer pro Tag, dafür näher an dem, was viele gewohnt sind.',
+    tipW: 'Nur Gewicht: Die Makroverteilung ist fast egal, es zählt hauptsächlich kcal pro Gramm. Nur das Protein-Ziel wird noch leicht berücksichtigt. Ergibt die leichtesten, aber oft sehr fettlastigen und einseitigen Pläne.',
+    tipStove: 'Kocher: Alles ist erlaubt, auch Gerichte, die köcheln müssen (z. B. Knorr Pasta Sides, Reis).',
+    tipCold: 'Cold Soak: Kein Kocher. Instant-Sachen und Trockenmahlzeiten weichen kalt im Glas ein. Ausgeschlossen sind nur Gerichte, die wirklich gekocht werden müssen.',
+    tipNo: 'Gar nicht: Nur Lebensmittel ohne Zubereitung oder zum kalt Anrühren (Müsli mit Milchpulver, Drinks). Keine Trockenmahlzeiten.',
+    tipC_lunch: 'Mittags-Wrap: Jeder Tag bekommt eine Tortilla oder ein Brot plus Belag (Nussbutter, Käse oder Wurst).',
+    tipC_bump: 'Bump: Ein Schuss Öl, Ghee oder Butterpulver ins Abendessen. Bringt ca. 250 kcal bei extrem wenig Gewicht, einer der stärksten Tricks aus GearSkeptics Videos.',
+    tipC_drink: 'Kaffee/Drink: Morgens zusätzlich ein Instant-Kaffee, Kakao oder Milchpulver-Drink.',
+    tipC_dessert: 'Dessert: Abends zusätzlich ein Trockenmahlzeit-Dessert (z. B. Cheesecake, Apple Crisp).',
+    tipC_veg: 'Vegetarisch: Alles mit Fleisch, Wurst, Jerky oder Fisch im Namen wird ausgeschlossen.',
+    tipC_fresh: 'Frisches Obst: Erlaubt rohes Obst wie Bananen oder Avocados. Standardmäßig aus, weil es pro Kalorie sehr schwer ist.',
     tags: { schoko: 'Schoko', erdnuss: 'Erdnuss', nuss: 'Nüsse', 'käse': 'Käse', fleisch: 'Fleisch', scharf: 'Scharf', frucht: 'Fruchtig', kaffee: 'Kaffee', asiatisch: 'Asiatisch', mexikanisch: 'Mexikanisch', pasta: 'Pasta', reis: 'Reis', kartoffel: 'Kartoffel', kokos: 'Kokos' },
   },
   en: {
@@ -137,6 +149,18 @@ const I18N = {
     hBlocks: 'Which meals each day gets. Breakfast and dinner are always included, the rest is filled with snacks up to the kcal goal.\nBump: a splash of oil, ghee or butter powder in dinner, extremely light per calorie.\nLunch wrap: tortilla plus filling (nut butter, cheese or cured meat).',
     hCraving: 'One click: foods with this flavor get a bonus. The further right the "Cravings & favorites" slider, the stronger the effect.\nSecond click: excluded completely.\nThird click: neutral again.',
     hAllergy: 'Selected allergens are fully excluded in the planner and hidden in the food list (can be switched off). Detection uses product name and class, rather too strict than too loose, but without guarantee. Corrections go into data/allergen_overrides.csv.',
+    tipGs: 'GearSkeptic profile: the planner aims for about 60 % of calories from fat (his scale: 60–70 % = "very good"), a carb-to-protein ratio of 3 to 4 and 5–15 % of calories from sugar. Result: very light plans with lots of nuts, nut butter, oil and chocolate.',
+    tipBal: 'Balanced: classic endurance sports nutrition with about 35 % fat, 47 % carbs and 18 % protein. More pasta, granola, bars and dried fruit. Noticeably heavier per day, but closer to what most people are used to.',
+    tipW: 'Weight only: macro split barely matters, it is mainly calories per gram. Only the protein goal is still lightly considered. Gives the lightest plans, but often very fat-heavy and one-sided.',
+    tipStove: 'Stove: everything is allowed, including dishes that need simmering (e.g. Knorr Pasta Sides, rice).',
+    tipCold: 'Cold soak: no stove. Instant items and freeze-dried meals soak cold in a jar. Only dishes that truly need cooking are excluded.',
+    tipNo: 'No prep: only foods with no preparation or a cold mix (granola with milk powder, drinks). No freeze-dried meals.',
+    tipC_lunch: 'Lunch wrap: each day gets a tortilla or bread plus a filling (nut butter, cheese or cured meat).',
+    tipC_bump: 'Bump: a splash of oil, ghee or butter powder in dinner. Adds about 250 kcal at almost no weight, one of the strongest tricks from GearSkeptic\'s videos.',
+    tipC_drink: 'Coffee/drink: an extra instant coffee, cocoa or milk powder drink in the morning.',
+    tipC_dessert: 'Dessert: an extra freeze-dried dessert in the evening (e.g. cheesecake, apple crisp).',
+    tipC_veg: 'Vegetarian: anything with meat, sausage, jerky or fish in its name is excluded.',
+    tipC_fresh: 'Fresh fruit: allows raw fruit like bananas or avocados. Off by default because it is very heavy per calorie.',
     tags: { schoko: 'Chocolate', erdnuss: 'Peanut', nuss: 'Nuts', 'käse': 'Cheese', fleisch: 'Meat', scharf: 'Spicy', frucht: 'Fruity', kaffee: 'Coffee', asiatisch: 'Asian', mexikanisch: 'Mexican', pasta: 'Pasta', reis: 'Rice', kartoffel: 'Potato', kokos: 'Coconut' },
   },
 };
@@ -637,6 +661,7 @@ function applyLang() {
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+  $$('[data-tipkey]').forEach(el => { el.dataset.tip = t(el.dataset.tipkey); });
   $$('[data-help]').forEach(el => { el.dataset.tip = t(el.dataset.help); el.setAttribute('aria-label', t(el.dataset.help)); });
   $$('#s-lang button').forEach(b => b.classList.toggle('on', b.dataset.v === st.lang));
   $$('#s-units button').forEach(b => b.classList.toggle('on', b.dataset.v === st.units));

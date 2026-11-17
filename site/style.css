@@ -38,7 +38,8 @@ main{max-width:1400px;margin:0 auto;padding:18px}
 select,input[type=number],input[type=search]{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px}
+.seg button:first-child{border-radius:8px 0 0 8px}.seg button:last-child{border-radius:0 8px 8px 0}
 .seg button{flex:1;border:0;background:#fff;padding:8px 4px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink)}
 .seg button+button{border-left:1px solid var(--line)}
 .seg button.on{background:var(--accent);color:#fff}
@@ -165,3 +166,10 @@ body.lang-de [data-lang=en], body.lang-en [data-lang=de]{display:none}
   background:#24382d;color:#f4efe2;padding:10px 12px;border-radius:10px;font-size:.8rem;font-weight:400;line-height:1.45;
   text-transform:none;letter-spacing:0;text-align:left;box-shadow:0 6px 20px rgba(0,0,0,.2);white-space:pre-line;pointer-events:none}
 .split em i{font-style:normal}
+
+/* Hover-Erklärungen auf Buttons/Checkboxen */
+.seg,.checks{position:relative}
+[data-tipkey]:hover::after{content:attr(data-tip);position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:30;
+  background:#24382d;color:#f4efe2;padding:10px 12px;border-radius:10px;font-size:.8rem;font-weight:400;line-height:1.45;
+  text-transform:none;letter-spacing:0;text-align:left;box-shadow:0 6px 20px rgba(0,0,0,.2);white-space:pre-line;pointer-events:none}
+@media (hover:none){[data-tipkey]:hover::after{display:none}}
