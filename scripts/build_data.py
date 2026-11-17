@@ -79,7 +79,7 @@ ALLERGENS = {
     "laktose": (r"milk|cheese|chees|cheddar|parmesan|mozzarella|monterey|queso|gouda|brie|whey|casein|butter(?! ?(?:fly|scotch))|\bcream|creamy|"
                 r"yogurt|yoghurt|alfredo|stroganoff|lasagna|\bmac\b|mac &|enchilada|quesadilla|pizza|gravy|ghee|nido|carnation|swiss miss|latte|mocha|"
                 r"cappuccino|chocolate|choc\b|cocoa|caramel|toffee|nougat|fudge|truffle|snickers|m&m|twix|milky way|3 musketeers|kit ?kat|hershey|"
-                r"reese|butterfinger|almond joy|heath|dove|lindt|ghirardelli|cadbury|babybel|laughing cow|tillamook|cheez|cheetos|doritos|sour cream|"
+                r"reese|butterfinger|almond joy|heath\b|dove|lindt|ghirardelli|cadbury|babybel|laughing cow|tillamook|cheez|cheetos|doritos|sour cream|"
                 r"ranch|protein bar|quest|pure protein|premier protein|power crunch|muscle milk|met-rx|atkins|think ?thin|builder|ice cream|custard|"
                 r"pudding|cheesecake|white chocolate|biscuits",
                 {"Cheese"},
@@ -167,6 +167,33 @@ def apply_allergen_overrides(brand, flavor, al):
     return s
 
 
+LAC_CHOC = (r"milk chocolate|white chocolate|chocolate|choc\b|cocoa|cacao|caramel|toffee|nougat|fudge|truffle|mocha|snickers|m&m|twix|milky way|"
+            r"3 musketeers|kit ?kat|hershey|reese|butterfinger|almond joy|heath\b|dove|lindt|ghirardelli|cadbury|carob")
+LAC_POWDER = (r"whole milk powder|milk powder|powdered milk|dry milk|nonfat milk|nido|heavy cream powder|cream powder|butter powder|"
+              r"carnation|swiss miss|instant breakfast|sour cream powder|cheese powder|cheddar cheese powder")
+LAC_OTHER = (r"milk|cheese|chees|cheddar|parmesan|mozzarella|monterey|queso|gouda|brie|whey|casein|butter(?! ?(?:fly|scotch))|\bcream|creamy|"
+             r"yogurt|yoghurt|alfredo|stroganoff|lasagna|\bmac\b|mac &|enchilada|quesadilla|pizza|gravy|ghee|latte|cappuccino|babybel|laughing cow|"
+             r"tillamook|cheez|cheetos|doritos|ranch|protein bar|quest|pure protein|premier protein|power crunch|muscle milk|met-rx|atkins|"
+             r"think ?thin|builder|ice cream|custard|pudding|cheesecake|biscuits")
+NON_DAIRY = r"peanut butter|nut butter|almond butter|cashew butter|sun ?butter|seed butter|apple butter|wow butter|cocoa butter|coconut milk|coconut cream|almond milk|oat milk"
+
+
+def lactose_reasons(brand, flavor, cls):
+    """Warum ein Produkt als laktosehaltig gilt: choc (nur Schokolade), powder (Milchpulver), other (sonstige Milchprodukte)."""
+    text = f"{brand} {flavor}".lower()
+    text = re.sub(NON_DAIRY, " ", text)
+    reasons = set()
+    if re.search(LAC_POWDER, text):
+        reasons.add("powder")
+        text = re.sub(LAC_POWDER, " ", text)
+    if re.search(LAC_CHOC, text):
+        reasons.add("choc")
+        text = re.sub(LAC_CHOC, " ", text)
+    if cls == "Cheese" or re.search(LAC_OTHER, text):
+        reasons.add("other")
+    return sorted(reasons)
+
+
 def tags_for(brand, flavor, cls):
     text = f"{brand} {flavor}".lower()
     t = [k for k, rx in TAGS.items() if re.search(rx, text)]
@@ -231,7 +258,15 @@ def main():
             "tier": tier,
             "tags": tags_for(brand, flavor, cls),
             "al": apply_allergen_overrides(brand, flavor, allergens_for(brand, flavor, cls)),
+            "lac": lactose_reasons(brand, flavor, cls),
         })
+
+    def finish():
+        for f in foods:
+            if "laktose" not in f["al"]:
+                f["lac"] = []
+            elif not f["lac"]:
+                f["lac"] = ["other"]
 
     ws = wb["Hiker Food"]
     rows = list(ws.iter_rows(values_only=True))
@@ -246,6 +281,7 @@ def main():
         prep = (row[h["Prep"]] or "hot").strip().lower()
         add("dm", row, h, servings=num(row[h["Servings"]]) or 1, prep=prep)
 
+    finish()
     electrolytes = []
     ws = wb["Electrolytes"]
     rows = list(ws.iter_rows(values_only=True))

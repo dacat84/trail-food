@@ -18,6 +18,9 @@ const I18N = {
     allergyTitle: 'Allergien / Unverträglichkeiten',
     allergyHint: 'Erkennung nur über Produktname und Kategorie, die Tabelle enthält keine Zutatenlisten. Bei echter Allergie immer das Etikett prüfen, auch auf „kann Spuren enthalten“.',
     hideAllergens: 'meine Allergene ausblenden',
+    lacChoc: 'Schokolade erlauben', lacPowder: 'Milchpulver erlauben',
+    tipLacChoc: 'Erlaubt Produkte, die nur wegen Schokolade, Karamell oder Toffee als laktosehaltig markiert sind. Schokolade hat meist wenig Laktose, viele vertragen kleine Mengen. Käse, Molke, Sahne usw. bleiben ausgeschlossen.',
+    tipLacPowder: 'Erlaubt Produkte, die nur wegen Milchpulver markiert sind (z. B. Nido, Carnation, Butter- oder Sahnepulver). Sinnvoll mit Laktase-Tabletten oder laktosefreiem Pulver.',
     al: { gluten: 'Gluten', erdnuss: 'Erdnuss', schalenfruechte: 'Schalenfrüchte (Nüsse)', laktose: 'Laktose / Milch', ei: 'Ei', soja: 'Soja', fisch: 'Fisch / Meeresfrüchte', sesam: 'Sesam' },
     searchPh: 'Suchen: Marke oder Sorte, z. B. snickers, knorr, mountain house …', search: 'Suchen …',
     allMeals: 'Alle Mahlzeiten', m_breakfast: 'Frühstück', m_lunchF: 'Mittag (Wrap/Belag)', m_snackF: 'Snacks', m_dinner: 'Abendessen',
@@ -99,6 +102,9 @@ const I18N = {
     allergyTitle: 'Allergies / intolerances',
     allergyHint: 'Detected from product name and class only; the sheet has no ingredient lists. With a real allergy always check the label, including "may contain".',
     hideAllergens: 'hide my allergens',
+    lacChoc: 'Allow chocolate', lacPowder: 'Allow milk powder',
+    tipLacChoc: 'Allows foods flagged for lactose only because of chocolate, caramel or toffee. Chocolate is usually low in lactose and many people tolerate small amounts. Cheese, whey, cream etc. stay excluded.',
+    tipLacPowder: 'Allows foods flagged only because of milk powder (e.g. Nido, Carnation, butter or cream powder). Useful with lactase pills or lactose-free powder.',
     al: { gluten: 'Gluten', erdnuss: 'Peanut', schalenfruechte: 'Tree nuts', laktose: 'Lactose / dairy', ei: 'Egg', soja: 'Soy', fisch: 'Fish / shellfish', sesam: 'Sesame' },
     searchPh: 'Search brand or flavor, e.g. snickers, knorr, mountain house …', search: 'Search …',
     allMeals: 'All meals', m_breakfast: 'Breakfast', m_lunchF: 'Lunch (wrap/filling)', m_snackF: 'Snacks', m_dinner: 'Dinner',
@@ -198,7 +204,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: browserLang(), units: 'metric', allergens: [],
+  lang: browserLang(), units: 'metric', allergens: [], lacChoc: false, lacPowder: false,
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
@@ -224,7 +230,8 @@ const fname = f => `${f.b} ${f.n}`.trim();
 const tierLabel = k => t('t_' + k);
 const cls = f => { const l = S.settings.lang; if (l === 'de') return f.cde; const m = window.I18N_EXTRA && window.I18N_EXTRA.CLASSES[l]; return (m && m[f.c]) || f.cen; };
 const cToF = c => Math.round(c * 9 / 5 + 32);
-const hasAllergen = f => (f.al || []).some(a => S.settings.allergens.includes(a));
+const lacAllowed = f => f.lac && f.lac.length && f.lac.every(r => (r === 'choc' && S.settings.lacChoc) || (r === 'powder' && S.settings.lacPowder));
+const hasAllergen = f => (f.al || []).some(a => S.settings.allergens.includes(a) && !(a === 'laktose' && lacAllowed(f)));
 
 // Einheiten
 const wSmall = g => IMP() ? `${fmt(g / OZ, 1)} oz` : `${fmt(g)} g`;
@@ -731,6 +738,8 @@ function drawTags() {
     `<button class="chip ${S.tags[k] === 1 ? 'yes' : S.tags[k] === -1 ? 'no' : ''}" data-t="${k}">${l}</button>`).join('');
 }
 function drawAllergens() {
+  $('#lac-opts').hidden = !S.settings.allergens.includes('laktose');
+  $('#c-lacchoc').checked = !!S.settings.lacChoc; $('#c-lacpowder').checked = !!S.settings.lacPowder;
   $('#s-allergens').innerHTML = Object.entries(L().al).map(([k, l]) =>
     `<button class="chip al ${S.settings.allergens.includes(k) ? 'yes' : ''}" data-al="${k}">${S.settings.allergens.includes(k) ? '🚫 ' : ''}${l}</button>`).join('');
 }
@@ -803,6 +812,9 @@ function initUI() {
     if ($('#tab-foods').classList.contains('active')) renderFoods();
   };
 
+  for (const [id, key] of [['#c-lacchoc', 'lacChoc'], ['#c-lacpowder', 'lacPowder']]) {
+    $(id).onchange = e => { st[key] = e.target.checked; save(); generate(); if ($('#tab-foods').classList.contains('active')) renderFoods(); };
+  }
   $('#btn-gen').onclick = () => { generate(); if (innerWidth < 900) $('#summary').scrollIntoView({ behavior: 'smooth' }); };
   $('#tab-plan').addEventListener('click', e => { if (e.target.closest('#days')) onPlanClick(e); });
 
