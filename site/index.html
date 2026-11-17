@@ -42,10 +42,28 @@
       </label>
       <p id="stop-info" class="hint"></p>
 
+      <div id="leg-box">
+        <label class="field">
+          <span><span data-i18n="nextStop"></span> <i class="help" tabindex="0" data-help="hLeg">?</i></span>
+          <select id="s-to"></select>
+        </label>
+        <div class="row2">
+          <label class="field">
+            <span id="l-daydist"></span>
+            <input type="number" id="s-daydist" min="3" max="80" step="1">
+          </label>
+          <label class="field">
+            <span data-i18n="reserve"></span>
+            <select id="s-reserve"><option value="0">0</option><option value="0.5">+ ½</option><option value="1">+ 1</option><option value="2">+ 2</option></select>
+          </label>
+        </div>
+        <p id="leg-info" class="hint legi"></p>
+      </div>
+
       <div class="row2">
         <label class="field">
           <span><span data-i18n="days"></span> <b id="v-days">4</b> <i class="help" tabindex="0" data-help="hDays">?</i></span>
-          <input type="range" id="s-days" min="1" max="10" value="4">
+          <input type="range" id="s-days" min="1" max="14" value="4">
         </label>
         <label class="field">
           <span data-i18n="kcalDay"></span>

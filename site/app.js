@@ -18,6 +18,9 @@ const I18N = {
     allergyTitle: 'Allergien / Unverträglichkeiten',
     allergyHint: 'Erkennung nur über Produktname und Kategorie, die Tabelle enthält keine Zutatenlisten. Bei echter Allergie immer das Etikett prüfen, auch auf „kann Spuren enthalten“.',
     hideAllergens: 'meine Allergene ausblenden',
+    nextStop: 'Nächster Resupply', manualDays: '– Tage selbst wählen –', dayDist: 'Tagesdistanz', reserve: 'Reserve (Tage)',
+    legInfo: (d, ex, days) => `🥾 ${d} bis dorthin = ${ex} Tage Laufzeit → ${days} Tage Essen eingeplant`,
+    hLeg: 'Wähl den nächsten Stop auf demselben Trail. Aus der Meilen-Differenz und deiner Tagesdistanz rechnet der Planer die reine Laufzeit, addiert die Reserve und rundet auf ganze Tage auf. Das setzt den Tage-Regler automatisch. Wege vom Trail in den Ort (Hitch, Side Trail) sind nicht eingerechnet. Wer den Tage-Regler selbst verschiebt, schaltet auf „Tage selbst wählen“.',
     lacChoc: 'Schokolade erlauben', lacPowder: 'Milchpulver erlauben',
     tipLacChoc: 'Erlaubt Produkte, die nur wegen Schokolade, Karamell oder Toffee als laktosehaltig markiert sind. Schokolade hat meist wenig Laktose, viele vertragen kleine Mengen. Käse, Molke, Sahne usw. bleiben ausgeschlossen.',
     tipLacPowder: 'Erlaubt Produkte, die nur wegen Milchpulver markiert sind (z. B. Nido, Carnation, Butter- oder Sahnepulver). Sinnvoll mit Laktase-Tabletten oder laktosefreiem Pulver.',
@@ -102,6 +105,9 @@ const I18N = {
     allergyTitle: 'Allergies / intolerances',
     allergyHint: 'Detected from product name and class only; the sheet has no ingredient lists. With a real allergy always check the label, including "may contain".',
     hideAllergens: 'hide my allergens',
+    nextStop: 'Next resupply', manualDays: '– choose days myself –', dayDist: 'Daily distance', reserve: 'Buffer (days)',
+    legInfo: (d, ex, days) => `🥾 ${d} to get there = ${ex} days of hiking → ${days} days of food planned`,
+    hLeg: 'Pick the next stop on the same trail. From the mile difference and your daily distance the planner works out the hiking time, adds the buffer and rounds up to whole days. This sets the days slider automatically. Walking or hitching between trail and town is not included. Moving the days slider yourself switches to "choose days myself".',
     lacChoc: 'Allow chocolate', lacPowder: 'Allow milk powder',
     tipLacChoc: 'Allows foods flagged for lactose only because of chocolate, caramel or toffee. Chocolate is usually low in lactose and many people tolerate small amounts. Cheese, whey, cream etc. stay excluded.',
     tipLacPowder: 'Allows foods flagged only because of milk powder (e.g. Nido, Carnation, butter or cream powder). Useful with lactase pills or lactose-free powder.',
@@ -204,7 +210,7 @@ const S = load() || { settings: {}, fav: [], dis: [], pin: [], tags: {}, plan: n
 S.settings = Object.assign({
   stop: 'all', days: 4, kcal: 3500, protein: 100, temp: 25, prep: 'stove', profile: 'gs',
   lust: 40, variety: 65, lunch: true, bump: true, drink: false, dessert: false, veg: false, fresh: false,
-  lang: browserLang(), units: 'metric', allergens: [], lacChoc: false, lacPowder: false,
+  lang: browserLang(), units: 'metric', toStop: 'auto', dayMi: 20, reserve: 0.5, allergens: [], lacChoc: false, lacPowder: false,
 }, S.settings);
 S.tags = S.tags || {};
 const fav = new Set(S.fav || []), dis = new Set(S.dis || []), pin = new Set(S.pin || []);
@@ -698,6 +704,7 @@ function applyLang() {
     ${TRAILS.map(tr => `<optgroup label="${tr[1]} (NOBO)">${D.stops.map((s, i) => [s, i]).filter(([s]) => (s.trail || 'PCT') === tr[0]).map(([s, i]) => `<option value="s:${i}">${tr[0]} · ${t('mile')} ${s.mile} · ${esc(s.name)}${s.tier === 'none' ? ' 📦' : ''}</option>`).join('')}</optgroup>`).join('')}`;
   sel.value = st.stop;
   stopInfo();
+  drawLeg();
 
   $('#s-temp').innerHTML = Object.keys(NA_BY_TEMP).map(c => `<option value="${c}">${tempLabel(+c)}</option>`).join('');
   $('#s-temp').value = st.temp;
@@ -756,6 +763,42 @@ function renderKeys() {
     tbl(l.keyNa, [''], [['< 0,64', 0, 1], ['0,64–1,00', 1, 3], ['1,00–1,25', 2, 5], ['> 1,25', 3, 2]].map(r => `<tr><td>${n(r[0])}</td><td>${pill([l.r_na[r[1]], r[2]])}</td></tr>`));
 }
 
+// ---------- Etappe: Start bis nächster Resupply ----------
+const KM = 1.609344;
+function legCandidates() {
+  const s = currentStop();
+  if (!s || s.generic || s.mile == null) return [];
+  const tr = s.trail || 'PCT';
+  return D.stops.map((x, i) => [x, i]).filter(([x]) => (x.trail || 'PCT') === tr && x.mile > s.mile);
+}
+function drawLeg() {
+  const st = S.settings, list = legCandidates();
+  $('#leg-box').hidden = !list.length;
+  if (!list.length) return;
+  const s = currentStop();
+  if (st.toStop === 'auto' || (st.toStop !== '' && !list.some(([, i]) => String(i) === String(st.toStop)))) st.toStop = String(list[0][1]);
+  const dist = mi => IMP() ? `${fmt(mi)} mi` : `${fmt(mi * KM)} km`;
+  $('#s-to').innerHTML = `<option value="">${t('manualDays')}</option>` + list.map(([x, i]) =>
+    `<option value="${i}">${esc(x.name)} (+${dist(x.mile - s.mile)})${x.tier === 'none' ? ' 📦' : ''}</option>`).join('');
+  $('#s-to').value = st.toStop;
+  $('#l-daydist').innerHTML = `${t('dayDist')} (${IMP() ? 'mi' : 'km'})`;
+  $('#s-daydist').value = IMP() ? Math.round(st.dayMi) : Math.round(st.dayMi * KM);
+  $('#s-reserve').value = String(st.reserve);
+  updateLeg();
+}
+function updateLeg() {
+  const st = S.settings, s = currentStop();
+  if (st.toStop === '' || !s || s.generic || !legCandidates().length) { $('#leg-info').textContent = ''; return; }
+  const to = D.stops[+st.toStop];
+  if (!to) return;
+  const mi = to.mile - s.mile, exact = mi / st.dayMi;
+  const days = clamp(Math.ceil(exact + (+st.reserve) - 1e-9), 1, 14);
+  st.days = days;
+  $('#s-days').value = days; $('#v-days').textContent = days;
+  const d = IMP() ? `${fmt(mi)} mi` : `${fmt(mi * KM)} km`;
+  $('#leg-info').textContent = L().legInfo(d, fmt(exact, 1), days);
+}
+
 // ---------- Init ----------
 function initUI() {
   const st = S.settings;
@@ -774,14 +817,17 @@ function initUI() {
     save(); applyLang();
   });
 
-  $('#s-stop').onchange = e => { st.stop = e.target.value; stopInfo(); save(); generate(); };
+  $('#s-stop').onchange = e => { st.stop = e.target.value; st.toStop = 'auto'; stopInfo(); drawLeg(); save(); generate(); };
+  $('#s-to').onchange = e => { st.toStop = e.target.value; updateLeg(); save(); generate(); };
+  $('#s-daydist').onchange = e => { const v = +e.target.value; if (v > 0) st.dayMi = IMP() ? v : v / KM; updateLeg(); save(); generate(); };
+  $('#s-reserve').onchange = e => { st.reserve = +e.target.value; updateLeg(); save(); generate(); };
   const bindNum = (id, key) => {
     const el = $(id); el.value = st[key];
     el.onchange = () => { st[key] = +el.value; save(); generate(); };
   };
   const days = $('#s-days'); days.value = st.days; $('#v-days').textContent = st.days;
   days.oninput = () => { $('#v-days').textContent = days.value; };
-  days.onchange = () => { st.days = +days.value; save(); generate(); };
+  days.onchange = () => { st.days = +days.value; if (st.toStop !== '') { st.toStop = ''; $('#s-to').value = ''; $('#leg-info').textContent = ''; } save(); generate(); };
   bindNum('#s-kcal', 'kcal'); bindNum('#s-protein', 'protein'); bindNum('#s-lust', 'lust'); bindNum('#s-var', 'variety');
   $('#s-temp').onchange = e => { st.temp = +e.target.value; save(); renderPlan(); };
 
