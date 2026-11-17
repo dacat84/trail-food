@@ -3,25 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trail Food Planer · PCT Resupply</title>
-<meta name="description" content="Resupply- und Menüplaner für Thru-Hiker auf Basis von GearSkeptics Hiker Food 2.5">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥾</text></svg>">
+<title>Trail Food Planner · PCT Resupply</title>
+<meta name="description" content="Resupply and menu planner for thru-hikers based on GearSkeptic's Hiker Food 2.5">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍌</text></svg>">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
   <div class="brand">
     <span class="logo">⛰</span>
-    <div>
-      <h1>Trail Food Planer</h1>
-      <p class="sub">kcal pro Gramm, Erreichbarkeit am PCT, Menüs auf die du Lust hast</p>
+    <div style="flex:1">
+      <h1 data-i18n="title"></h1>
+      <p class="sub" data-i18n="subtitle"></p>
+    </div>
+    <div class="toggles">
+      <div class="seg dark" id="s-lang"><button data-v="de">DE</button><button data-v="en">EN</button></div>
+      <div class="seg dark" id="s-units"><button data-v="metric">g · kg</button><button data-v="imperial">oz · lb</button></div>
     </div>
   </div>
   <nav class="tabs" role="tablist">
-    <button class="tab active" data-tab="plan">Planer</button>
-    <button class="tab" data-tab="foods">Lebensmittel</button>
-    <button class="tab" data-tab="salt">Elektrolyte</button>
-    <button class="tab" data-tab="about">Methode</button>
+    <button class="tab active" data-tab="plan" data-i18n="tabPlan"></button>
+    <button class="tab" data-tab="foods" data-i18n="tabFoods"></button>
+    <button class="tab" data-tab="salt" data-i18n="tabSalt"></button>
+    <button class="tab" data-tab="about" data-i18n="tabAbout"></button>
   </nav>
 </header>
 
@@ -30,86 +34,88 @@
 <section id="tab-plan" class="panel active">
   <div class="plan-layout">
     <aside class="settings card">
-      <h2>Resupply</h2>
+      <h2 data-i18n="resupply"></h2>
 
       <label class="field">
-        <span>Einkaufsort</span>
+        <span><span data-i18n="shopAt"></span> <i class="help" tabindex="0" data-help="hStop">?</i></span>
         <select id="s-stop"></select>
       </label>
       <p id="stop-info" class="hint"></p>
 
       <div class="row2">
         <label class="field">
-          <span>Tage <b id="v-days">4</b></span>
+          <span><span data-i18n="days"></span> <b id="v-days">4</b> <i class="help" tabindex="0" data-help="hDays">?</i></span>
           <input type="range" id="s-days" min="1" max="10" value="4">
         </label>
         <label class="field">
-          <span>kcal / Tag</span>
+          <span data-i18n="kcalDay"></span>
           <input type="number" id="s-kcal" min="1200" max="7000" step="100" value="3500">
         </label>
       </div>
 
       <div class="row2">
         <label class="field">
-          <span>Protein-Ziel g / Tag</span>
+          <span><span data-i18n="proteinGoal"></span> <i class="help" tabindex="0" data-help="hProtein">?</i></span>
           <input type="number" id="s-protein" min="30" max="250" step="5" value="100">
         </label>
         <label class="field">
-          <span>Temperatur (Na-Bedarf)</span>
-          <select id="s-temp">
-            <option value="15">15 °C</option><option value="20">20 °C</option>
-            <option value="25" selected>25 °C</option><option value="30">30 °C</option>
-            <option value="35">35 °C</option><option value="40">40 °C</option>
-          </select>
+          <span><span data-i18n="temp"></span> <i class="help" tabindex="0" data-help="hTemp">?</i></span>
+          <select id="s-temp"></select>
         </label>
       </div>
 
       <label class="field">
-        <span>Zubereitung</span>
+        <span><span data-i18n="prep"></span> <i class="help" tabindex="0" data-help="hPrep">?</i></span>
         <div class="seg" id="s-prep">
-          <button data-v="stove" class="on">Kocher</button>
+          <button data-v="stove" data-i18n="stove"></button>
           <button data-v="coldsoak">Cold Soak</button>
-          <button data-v="nocook">Gar nicht</button>
+          <button data-v="nocook" data-i18n="nocook"></button>
         </div>
       </label>
 
       <label class="field">
-        <span>Makro-Profil</span>
+        <span><span data-i18n="profile"></span> <i class="help" tabindex="0" data-help="hProfile">?</i></span>
         <div class="seg" id="s-profile">
-          <button data-v="gs" class="on" title="GearSkeptic: fettbetont, Kohlenhydrat/Protein 3–4, Zucker 5–15 %">GearSkeptic</button>
-          <button data-v="bal" title="Klassisch: ca. 35 % Fett, 47 % KH, 18 % Protein">Ausgewogen</button>
-          <button data-v="weight" title="Nur kcal pro Gramm">Nur Gewicht</button>
+          <button data-v="gs" data-i18n-title="profGsT">GearSkeptic</button>
+          <button data-v="bal" data-i18n="profBal" data-i18n-title="profBalT"></button>
+          <button data-v="weight" data-i18n="profW" data-i18n-title="profWT"></button>
         </div>
       </label>
 
       <label class="field">
-        <span class="split"><em>Leichtestes Gewicht</em><em>Lust &amp; Favoriten</em></span>
+        <span class="split"><em data-i18n="lightest"></em><em><i data-i18n="cravings"></i> <i class="help" tabindex="0" data-help="hLust">?</i></em></span>
         <input type="range" id="s-lust" min="0" max="100" value="40">
       </label>
       <label class="field">
-        <span class="split"><em>Gleiches okay</em><em>Viel Abwechslung</em></span>
+        <span class="split"><em data-i18n="sameOk"></em><em><i data-i18n="variety"></i> <i class="help" tabindex="0" data-help="hVar">?</i></em></span>
         <input type="range" id="s-var" min="0" max="100" value="65">
       </label>
 
       <div class="field">
-        <span>Bausteine</span>
+        <span><span data-i18n="blocks"></span> <i class="help" tabindex="0" data-help="hBlocks">?</i></span>
         <div class="checks">
-          <label><input type="checkbox" id="c-lunch" checked> Mittags-Wrap</label>
-          <label><input type="checkbox" id="c-bump" checked> Öl/Butter-Bump abends</label>
-          <label><input type="checkbox" id="c-drink"> Kaffee/Drink morgens</label>
-          <label><input type="checkbox" id="c-dessert"> Dessert</label>
-          <label><input type="checkbox" id="c-veg"> Vegetarisch</label>
-          <label><input type="checkbox" id="c-fresh"> Frisches Obst erlauben</label>
+          <label><input type="checkbox" id="c-lunch"> <i data-i18n="cLunch"></i></label>
+          <label><input type="checkbox" id="c-bump"> <i data-i18n="cBump"></i></label>
+          <label><input type="checkbox" id="c-drink"> <i data-i18n="cDrink"></i></label>
+          <label><input type="checkbox" id="c-dessert"> <i data-i18n="cDessert"></i></label>
+          <label><input type="checkbox" id="c-veg"> <i data-i18n="cVeg"></i></label>
+          <label><input type="checkbox" id="c-fresh"> <i data-i18n="cFresh"></i></label>
         </div>
       </div>
 
       <div class="field">
-        <span>Lust auf … <small>(1× = ja, 2× = bloß nicht)</small></span>
+        <span><span data-i18n="allergyTitle"></span> <i class="help" tabindex="0" data-help="hAllergy">?</i></span>
+        <div class="chips" id="s-allergens"></div>
+        <p class="hint" data-i18n="allergyHint"></p>
+      </div>
+
+      <div class="field">
+        <span><span data-i18n="cravingFor"></span> <i class="help" tabindex="0" data-help="hCraving">?</i> <small data-i18n="cravingHint"></small></span>
         <div class="chips" id="s-tags"></div>
       </div>
 
-      <button id="btn-gen" class="primary">Menü vorschlagen</button>
-      <p class="hint">Gesperrte Positionen 🔒 bleiben beim Neu-Vorschlagen erhalten.</p>
+      <button id="btn-gen" class="primary" data-i18n="suggest"></button>
+      <p class="hint" data-i18n="lockHint"></p>
     </aside>
 
     <div class="plan-out">
@@ -123,59 +129,53 @@
 <!-- ============ LEBENSMITTEL ============ -->
 <section id="tab-foods" class="panel">
   <div class="card filters">
-    <input type="search" id="f-q" placeholder="Suchen: Marke oder Sorte, z. B. snickers, knorr, mountain house …">
+    <input type="search" id="f-q" data-i18n-ph="searchPh">
     <select id="f-slot">
-      <option value="">Alle Mahlzeiten</option>
-      <option value="breakfast">Frühstück</option>
-      <option value="lunch">Mittag (Wrap/Belag)</option>
-      <option value="snack">Snacks</option>
-      <option value="dinner">Abendessen</option>
-      <option value="bump">Booster (Bump)</option>
-      <option value="dessert">Dessert</option>
-      <option value="drink">Getränke</option>
-      <option value="other">Sonstiges (Dosen, Notfall)</option>
+      <option value="" data-i18n="allMeals"></option>
+      <option value="breakfast" data-i18n="m_breakfast"></option>
+      <option value="lunch" data-i18n="m_lunchF"></option>
+      <option value="snack" data-i18n="m_snackF"></option>
+      <option value="dinner" data-i18n="m_dinner"></option>
+      <option value="bump" data-i18n="m_bumpF"></option>
+      <option value="dessert" data-i18n="m_dessert"></option>
+      <option value="drink" data-i18n="m_drinkF"></option>
+      <option value="other" data-i18n="m_other"></option>
     </select>
-    <select id="f-class"><option value="">Alle Kategorien</option></select>
-    <select id="f-tier">
-      <option value="">Überall egal</option>
-      <option value="gas">⛽ Tankstelle / General Store</option>
-      <option value="market">🏪 Bis kleiner Markt</option>
-      <option value="super">🛒 Bis Supermarkt</option>
-      <option value="outdoor">🏕 Outdoorladen</option>
-      <option value="online">📦 Nur online / Paket</option>
-    </select>
+    <select id="f-class"></select>
+    <select id="f-tier"></select>
     <select id="f-prep">
-      <option value="">Jede Zubereitung</option>
-      <option value="none">Ohne Zubereitung</option>
-      <option value="cold">Kalt anrühren</option>
-      <option value="hot">Heißes Wasser</option>
-      <option value="cook">Kochen</option>
+      <option value="" data-i18n="anyPrep"></option>
+      <option value="none" data-i18n="p_none"></option>
+      <option value="cold" data-i18n="p_cold"></option>
+      <option value="hot" data-i18n="p_hot"></option>
+      <option value="cook" data-i18n="p_cook"></option>
     </select>
-    <label class="mini">min kcal/g <input type="number" id="f-min" step="0.5" min="0" max="9" value="0"></label>
-    <label class="mini"><input type="checkbox" id="f-fav"> nur ♥</label>
+    <label class="mini"><span id="f-min-label"></span> <input type="number" id="f-min" step="0.5" min="0" value="0"></label>
+    <label class="mini"><input type="checkbox" id="f-fav"> <i data-i18n="onlyFav"></i></label>
+    <label class="mini"><input type="checkbox" id="f-al" checked> <i data-i18n="hideAllergens"></i></label>
     <span id="f-count" class="hint"></span>
   </div>
   <div class="card tablewrap">
     <table id="t-foods">
       <thead><tr>
         <th></th>
-        <th data-k="b">Marke</th>
-        <th data-k="n">Sorte</th>
-        <th data-k="cde">Kategorie</th>
-        <th data-k="g" class="num">g</th>
+        <th data-k="b" data-i18n="thBrand"></th>
+        <th data-k="n" data-i18n="thFlavor"></th>
+        <th data-k="cls" data-i18n="thClass"></th>
+        <th data-k="g" class="num" id="th-w"></th>
         <th data-k="kcal" class="num">kcal</th>
         <th data-k="kg" class="num">kcal/g</th>
         <th data-k="koz" class="num">kcal/oz</th>
-        <th data-k="fatp" class="num">Fett %</th>
-        <th data-k="sugp" class="num">Zucker %</th>
-        <th data-k="pro" class="num">Prot g</th>
-        <th data-k="cp" class="num">KH/Prot</th>
+        <th data-k="fatp" class="num" data-i18n="thFat"></th>
+        <th data-k="sugp" class="num" data-i18n="thSugar"></th>
+        <th data-k="pro" class="num" data-i18n="thPro"></th>
+        <th data-k="cp" class="num" data-i18n="thCp"></th>
         <th data-k="nak" class="num">mg Na/kcal</th>
-        <th data-k="tierRank">Erhältlich</th>
+        <th data-k="tierRank" data-i18n="thAvail"></th>
       </tr></thead>
       <tbody></tbody>
     </table>
-    <button id="f-more" class="ghost">Mehr anzeigen</button>
+    <button id="f-more" class="ghost" data-i18n="more"></button>
   </div>
 </section>
 
@@ -183,19 +183,19 @@
 <section id="tab-salt" class="panel">
   <div class="grid2">
     <div class="card">
-      <h2>Natriumbedarf (GearSkeptic NaK-Rechner)</h2>
-      <p>GearSkeptic schätzt den Tagesbedarf an Natrium aus der Temperatur, weil der Schweißverlust stark mit der Hitze steigt. Kalium braucht man laut seiner Tabelle deutlich weniger zusätzlich (Schweiß Na:K ≈ 4,5:1).</p>
+      <h2 data-i18n="naTitle"></h2>
+      <p data-i18n="naText"></p>
       <table class="mini-table">
-        <thead><tr><th>Temperatur</th><th>Na-Bedarf mg/Tag</th></tr></thead>
+        <thead><tr><th data-i18n="tempCol"></th><th data-i18n="naCol"></th></tr></thead>
         <tbody id="nak-table"></tbody>
       </table>
-      <p class="hint">RDA zum Vergleich: 1500 mg Na, 3400 mg K. Der Planer zeigt, wie viel Natrium die gewählte Verpflegung schon liefert.</p>
+      <p class="hint" data-i18n="naHint"></p>
     </div>
     <div class="card">
-      <h2>Elektrolyt-Produkte</h2>
-      <input type="search" id="e-q" placeholder="Suchen …">
+      <h2 data-i18n="elecTitle"></h2>
+      <input type="search" id="e-q" data-i18n-ph="search">
       <div class="tablewrap small"><table id="t-elec">
-        <thead><tr><th>Produkt</th><th class="num">g</th><th class="num">kcal</th><th class="num">Na mg</th><th class="num">K mg</th><th class="num">Mg mg</th><th class="num">Koffein</th><th>Erhältlich</th></tr></thead>
+        <thead><tr><th data-i18n="product"></th><th class="num" id="th-ew"></th><th class="num">kcal</th><th class="num">Na mg</th><th class="num">K mg</th><th class="num">Mg mg</th><th class="num" data-i18n="caffeine"></th><th data-i18n="thAvail"></th></tr></thead>
         <tbody></tbody>
       </table></div>
     </div>
@@ -206,34 +206,48 @@
 <section id="tab-about" class="panel">
   <div class="grid2">
     <div class="card prose">
-      <h2>Wer ist GearSkeptic?</h2>
-      <p>GearSkeptic ist ein YouTube-Kanal, der Ausrüstung und vor allem Trail-Ernährung sehr datengetrieben auseinandernimmt. Statt „nimm halt Snickers“ rechnet er mit Kalorien pro Gewicht, Makroverteilung, Zuckeranteil und Natrium pro Kalorie und stellt seine riesige Tabelle <b>Hiker Food</b> kostenlos zur Verfügung. Diese Seite nutzt Version 2.5 als Datenquelle: über 1.200 Supermarkt- und Outdoor-Lebensmittel plus gut 400 Trockenmahlzeiten.</p>
-      <p>Seine Kernideen, die hier im Planer stecken:</p>
-      <ul>
-        <li><b>Gewicht zählt pro Kalorie, nicht pro Packung.</b> Fett hat 9 kcal/g, Kohlenhydrate und Protein je 4. Fettreiches Essen ist deshalb fast immer leichter.</li>
-        <li><b>Fettbetont, aber nicht nur Fett.</b> Er hält einen hohen Fettanteil an den Kalorien für ideal und bewertet 60–70 % als „sehr gut“. Daneben soll das Verhältnis Kohlenhydrate zu Protein bei etwa 3 bis 4 liegen.</li>
-        <li><b>Zucker dosiert.</b> 5–15 % der Kalorien aus Zucker gelten als optimal für den Trail, darüber lieber kleinere Portionen öfter.</li>
-        <li><b>Bumps.</b> Öl, Ghee, Butter- oder Kokosmilchpulver ins Abendessen heben die Dichte einer ganzen Mahlzeit enorm.</li>
-        <li><b>Natrium nach Temperatur.</b> Bei Hitze verliert man mehrere Gramm Natrium am Tag. Das Essen allein deckt das selten.</li>
-      </ul>
-      <p>Links: <a href="https://www.youtube.com/results?search_query=GearSkeptic+hiker+food" target="_blank" rel="noopener">GearSkeptic auf YouTube</a></p>
+      <div data-lang="de">
+        <h2>Wer ist GearSkeptic?</h2>
+        <p>GearSkeptic ist ein YouTube-Kanal, der Ausrüstung und vor allem Trail-Ernährung sehr datengetrieben auseinandernimmt. Statt „nimm halt Snickers“ rechnet er mit Kalorien pro Gewicht, Makroverteilung, Zuckeranteil und Natrium pro Kalorie und stellt seine riesige Tabelle <b>Hiker Food</b> kostenlos zur Verfügung. Diese Seite nutzt Version 2.5 als Datenquelle: über 1.200 Supermarkt- und Outdoor-Lebensmittel plus gut 400 Trockenmahlzeiten.</p>
+        <p>Seine Kernideen, die hier im Planer stecken:</p>
+        <ul>
+          <li><b>Gewicht zählt pro Kalorie, nicht pro Packung.</b> Fett hat 9 kcal/g, Kohlenhydrate und Protein je 4. Fettreiches Essen ist deshalb fast immer leichter.</li>
+          <li><b>Fettbetont, aber nicht nur Fett.</b> Er bewertet 60–70 % der Kalorien aus Fett als „sehr gut“. Daneben soll das Verhältnis Kohlenhydrate zu Protein bei etwa 3 bis 4 liegen.</li>
+          <li><b>Zucker dosiert.</b> 5–15 % der Kalorien aus Zucker gelten als optimal für den Trail, darüber lieber kleinere Portionen öfter.</li>
+          <li><b>Bumps.</b> Öl, Ghee, Butter- oder Kokosmilchpulver ins Abendessen heben die Dichte einer ganzen Mahlzeit enorm.</li>
+          <li><b>Natrium nach Temperatur.</b> Bei Hitze verliert man mehrere Gramm Natrium am Tag. Das Essen allein deckt das selten.</li>
+        </ul>
+      </div>
+      <div data-lang="en">
+        <h2>Who is GearSkeptic?</h2>
+        <p>GearSkeptic is a YouTube channel that takes gear and especially trail nutrition apart with data. Instead of "just bring Snickers" he works with calories per weight, macro split, sugar share and sodium per calorie, and shares his huge <b>Hiker Food</b> spreadsheet for free. This site uses version 2.5 as its data source: over 1,200 grocery and outdoor foods plus about 400 dried meals.</p>
+        <p>His core ideas built into the planner:</p>
+        <ul>
+          <li><b>Weight counts per calorie, not per package.</b> Fat has 9 kcal/g, carbs and protein 4 each. Fat-rich food is almost always lighter.</li>
+          <li><b>Fat-forward, but not only fat.</b> He rates 60–70 % of calories from fat as "very good", with a carb-to-protein ratio of about 3 to 4.</li>
+          <li><b>Sugar in moderation.</b> 5–15 % of calories from sugar is "optimum for trail"; above that, smaller portions more often.</li>
+          <li><b>Bumps.</b> Oil, ghee, butter or coconut milk powder in dinner raise the density of a whole meal.</li>
+          <li><b>Sodium by temperature.</b> In heat you lose several grams of sodium per day. Food alone rarely covers that.</li>
+        </ul>
+      </div>
+      <p><a href="https://www.youtube.com/results?search_query=GearSkeptic+hiker+food" target="_blank" rel="noopener">GearSkeptic · YouTube</a></p>
     </div>
     <div class="card prose">
-      <h2>Bewertungsskalen (aus Hiker Food 2.5)</h2>
+      <h2 data-i18n="scales"></h2>
       <div id="keys"></div>
-      <h2>Erreichbarkeit</h2>
-      <p>Die Spalte „Erhältlich“ ist eine eigene Einschätzung pro Marke, nicht aus GearSkeptics Tabelle:</p>
+      <h2 data-i18n="thAvail"></h2>
+      <p data-i18n="availText"></p>
       <ul class="tierlist" id="tierlist"></ul>
-      <p class="hint">Die PCT-Stops und ihre Ladengrößen sind grobe Richtwerte. Vor Ort und in FarOut immer gegenchecken, Läden ändern sich jede Saison.</p>
-      <h2>Daten aktualisieren</h2>
-      <p>Die Excel liegt im Repo unter <code>data/Hiker_Food_2.5.xlsx</code>. Neue Version reinlegen und pushen, die GitHub Action baut <code>foods.json</code> neu. Marken-Einstufungen stehen in <code>data/brands.csv</code>.</p>
+      <p class="hint" data-i18n="stopsHint"></p>
+      <h2 data-i18n="updTitle"></h2>
+      <p data-i18n="updText"></p>
     </div>
   </div>
 </section>
 </main>
 
 <div id="toast" class="toast"></div>
-<footer>Daten: GearSkeptic, Hiker Food 2.5 · Planer: <a href="https://github.com/dacat84/trail-food">dacat84/trail-food</a></footer>
+<footer><span data-i18n="footer"></span> · <a href="https://github.com/dacat84/trail-food">dacat84/trail-food</a></footer>
 <script src="app.js"></script>
 </body>
 </html>

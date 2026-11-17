@@ -41,6 +41,9 @@ CLASS_DE = {
     "Side": "Beilage (Trockenmahlzeit)", "Dessert": "Dessert (Trockenmahlzeit)",
 }
 
+CLASS_EN = {"Breakfast": "Breakfast (dried meal)", "Entrée": "Entrée (dried meal)", "Side": "Side (dried meal)",
+            "Dessert": "Dessert (dried meal)", "Bar 911": "Emergency bar", "Bump": "Bump (booster)", "Sides": "Sides / instant"}
+
 TAGS = {
     "schoko": r"chocolat|cocoa|cacao|brownie|fudge|mocha|m&m|snickers|twix|reese|hershey|kitkat|nutella|oreo|milky way|3 musketeers|butterfinger|ghirardelli|lindt|dove",
     "erdnuss": r"peanut|reese|pb2|jif|skippy|nutter",
@@ -58,6 +61,37 @@ TAGS = {
     "kokos": r"coconut",
 }
 MEAT_CLASSES = {"Meat", "Jerky"}
+
+# Allergene/Unverträglichkeiten: Heuristik über Name + Kategorie (keine Zutatenlisten in der Quelle!)
+ALLERGENS = {
+    "gluten": (r"wheat|flour|tortilla|bread|\bbuns?\b|bagel|pasta|noodle|ramen|macaroni|mac &|mac and|spaghetti|penne|rotini|lasagna|couscous|"
+               r"cracker|pretzel|cookie|wafer|waffle|biscuit|pizza|crust|pop.?tart|oreo|graham|barley|\brye\b|seitan|stuffing|stove top|"
+               r"cereal|granola|\boats?\b|oatmeal|muesli|teriyaki|soy sauce|brownie|cake|\bpie\b|donut|danish|pastry|croissant|newton|ritz|"
+               r"triscuit|cheez-it|\bwraps?\b|pita|kit ?kat|twix|malt|clif|nature valley|pocky|ravioli|dumpling|gravy|breaded|crisp rice|"
+               r"rice krispies|special k|kashi|honey stinger waffle|stroopwafel|bulgur|farro|orzo|udon|lo mein|chow mein|fiber one|nutri-grain|"
+               r"little debbie|hostess|keebler|nabisco|lance|pepperidge|club\b|saltine|goldfish|wheat thins|fig",
+               {"Bread", "Cracker", "Cookie", "Pastry", "Cereal"},
+               r"gluten.?free|grain.?free|\bgf\b|paleo|keto|almond flour"),
+    "erdnuss": (r"peanut|\bpb2\b|pb ?& ?j|reese|\bjif\b|skippy|nutter|snickers|payday|butterfinger|satay|trail mix|goober|boost|planters", set(), None),
+    "schalenfruechte": (r"almond|cashew|hazelnut|filbert|pecan|walnut|macadamia|pistach|brazil|nutella|praline|marzipan|trail mix|mixed nuts|"
+                        r"\bnuts?\b|pesto|larabar|nut butter|nut bar|kind\b|justin|frangipane|gianduja|ferrero|baklava", {"Nuts/Seeds", "Nut Butter", "Trail Mix"},
+                        None),
+    "laktose": (r"milk|cheese|chees|cheddar|parmesan|mozzarella|monterey|queso|gouda|brie|whey|casein|butter(?! ?(?:fly|scotch))|\bcream|creamy|"
+                r"yogurt|yoghurt|alfredo|stroganoff|lasagna|\bmac\b|mac &|enchilada|quesadilla|pizza|gravy|ghee|nido|carnation|swiss miss|latte|mocha|"
+                r"cappuccino|chocolate|choc\b|cocoa|caramel|toffee|nougat|fudge|truffle|snickers|m&m|twix|milky way|3 musketeers|kit ?kat|hershey|"
+                r"reese|butterfinger|almond joy|heath|dove|lindt|ghirardelli|cadbury|babybel|laughing cow|tillamook|cheez|cheetos|doritos|sour cream|"
+                r"ranch|protein bar|quest|pure protein|premier protein|power crunch|muscle milk|met-rx|atkins|think ?thin|builder|ice cream|custard|"
+                r"pudding|cheesecake|white chocolate|biscuits",
+                {"Cheese"},
+                r"dairy.?free|lactose.?free|vegan|non.?dairy|plant.?based|oat milk|coconut milk|almond milk|cocoa butter|peanut butter|nut butter|"
+                r"almond butter|cashew butter|sun ?butter|seed butter|apple butter|wow butter"),
+    "ei": (r"\beggs?\b|mayo|ovaeasy|scramble|meringue|custard|carbonara|pad thai|frittata|omelet|quiche|egg noodle", set(), r"eggless|egg.?free|vegan"),
+    "soja": (r"\bsoy|tofu|edamame|\btvp\b|textured vegetable|miso|tempeh|teriyaki|builder|vegan protein|plant protein", set(), r"soy.?free"),
+    "fisch": (r"tuna|salmon|sardine|anchov|\bcod\b|fish|shrimp|prawn|crab|lobster|clam|oyster|mussel|seafood|mackerel|pollock|bonito|paella|"
+              r"chicken of the sea|starkist|kipper|herring|scallop", set(), None),
+    "sesam": (r"sesame|tahini|hummus|halva|halwa|furikake|bagel", set(), r"sesame.?free"),
+}
+
 
 
 def num(v):
@@ -88,6 +122,49 @@ def load_overrides():
             for r in csv.DictReader(f):
                 m[(r["brand"].strip(), r["flavor"].strip())] = r["tier"].strip()
     return m
+
+
+def allergens_for(brand, flavor, cls):
+    text = f"{brand} {flavor}".lower()
+    out = []
+    for key, (rx, classes, exempt) in ALLERGENS.items():
+        hit = bool(re.search(rx, text)) or cls in classes
+        if key == "schalenfruechte" and cls == "Nuts/Seeds" and re.search(r"sunflower|pumpkin|pepita|chia|hemp|flax|sesame|seeds?\b", text) \
+                and not re.search(r"almond|cashew|hazelnut|pecan|walnut|macadamia|pistach|brazil|mixed nuts", text):
+            hit = False
+        if key == "schalenfruechte" and re.search(r"peanut", text) and not re.search(r"almond|cashew|hazelnut|pecan|walnut|macadamia|pistach|mixed|trail", text):
+            hit = bool(cls in {"Trail Mix"})
+        if hit and exempt and re.search(exempt, text):
+            # dunkle/vegane Schokolade usw. nur befreien, wenn keine eindeutigen Milchwörter drinstehen
+            if not (key == "laktose" and re.search(r"milk chocolate|cheese|whey|cream cheese|yogurt", text)):
+                hit = False
+        if hit:
+            out.append(key)
+    return out
+
+
+def load_allergen_overrides():
+    rules = []
+    p = DATA / "allergen_overrides.csv"
+    if p.exists():
+        with open(p, newline="", encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                rules.append((r["brand"].strip(), r["flavor"].strip() or "*", (r["add"] or "").split(), (r["remove"] or "").split()))
+    return rules
+
+
+ALLERGEN_RULES = None
+
+
+def apply_allergen_overrides(brand, flavor, al):
+    global ALLERGEN_RULES
+    if ALLERGEN_RULES is None:
+        ALLERGEN_RULES = load_allergen_overrides()
+    s = list(al)
+    for b, fl, add, rem in ALLERGEN_RULES:
+        if b == brand and (fl == "*" or fl == flavor):
+            s = [a for a in s if a not in rem] + [a for a in add if a not in s]
+    return s
 
 
 def tags_for(brand, flavor, cls):
@@ -142,6 +219,7 @@ def main():
             "n": flavor,
             "c": cls,
             "cde": CLASS_DE.get(cls, cls),
+            "cen": CLASS_EN.get(cls, cls),
             "slot": slot,
             "prep": prep,
             "g": r1(sg * unit_serv),
@@ -152,6 +230,7 @@ def main():
             "unit": "Packung" if unit_serv > 1 or src == "dm" else "Portion",
             "tier": tier,
             "tags": tags_for(brand, flavor, cls),
+            "al": apply_allergen_overrides(brand, flavor, allergens_for(brand, flavor, cls)),
         })
 
     ws = wb["Hiker Food"]
